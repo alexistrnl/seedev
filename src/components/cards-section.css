@@ -1,0 +1,80 @@
+.card-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-hover::before,
+.card-hover::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  left: -50%;
+  top: -50%;
+  z-index: 0;
+  transform: scale(0);
+  transform-origin: top left;
+  transition: transform 0.5s ease-in-out;
+}
+
+.card-hover::before {
+  background: #e5e5e5;
+  width: 250%;
+  height: 250%;
+}
+
+.card-hover::after {
+  background: white;
+  width: 200%;
+  height: 200%;
+  transition-delay: 0.1s;
+}
+
+.card-hover:hover::before,
+.card-hover:hover::after {
+  transform: scale(1);
+}
+
+.card-content {
+  position: relative;
+  z-index: 10;
+  transition: color 0.5s;
+}
+
+.card-hover:hover .card-content {
+  color: #171717;
+}
+
+.card-hover:hover .card-content h1 {
+  text-align: left;
+}
+
+.card-description {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out, margin 0.5s ease-in-out;
+  margin-bottom: 0;
+}
+
+.card-hover:hover .card-description {
+  opacity: 1;
+  max-height: 400px;
+  margin-bottom: 1.25rem;
+}
+
+.card-tag {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  margin: 0;
+}
+
+.card-hover:hover .card-tag {
+  opacity: 1;
+  max-height: 100px;
+  background: #171717;
+  color: white;
+  margin-top: 0;
+}
+

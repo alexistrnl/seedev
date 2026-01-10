@@ -1,0 +1,255 @@
+/* INTRO GATE - Overlay plein écran */
+
+/* Houdini property pour l'animation blink */
+@property --blink-opacity {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+@keyframes blink-animation {
+  0%,
+  100% {
+    opacity: var(--blink-opacity, 1);
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Container overlay plein écran */
+.introGateOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  background: var(--bg, #000);
+  display: flex;
+  place-content: center;
+  place-items: center;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-family: Inter, sans-serif;
+}
+
+.introGateOverlay.closing {
+  opacity: 0;
+  transform: scale(0.98);
+  pointer-events: none;
+}
+
+/* Variables CSS - Thème sombre uniquement */
+.introGateOverlay {
+  --stripe-color: #000;
+  --bg: var(--stripe-color);
+  --maincolor: var(--bg);
+}
+
+/* Animation du background */
+@keyframes smoothBg {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+.introGateOverlay .wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.introGateOverlay .hero {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  --stripes: repeating-linear-gradient(
+    100deg,
+    var(--stripe-color) 0%,
+    var(--stripe-color) 7%,
+    transparent 10%,
+    transparent 12%,
+    var(--stripe-color) 16%
+  );
+
+  --rainbow: repeating-linear-gradient(
+    100deg,
+    #60a5fa 10%,
+    #e879f9 15%,
+    #60a5fa 20%,
+    #5eead4 25%,
+    #60a5fa 30%
+  );
+  background-image: var(--stripes), var(--rainbow);
+  background-size: 300%, 200%;
+  background-position: 50% 50%, 50% 50%;
+
+  filter: blur(10px) opacity(50%) saturate(200%);
+
+  mask-image: radial-gradient(ellipse at 100% 0%, black 40%, transparent 70%);
+}
+
+.introGateOverlay .hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--stripes), var(--rainbow);
+  background-size: 200%, 100%;
+  animation: smoothBg 60s linear infinite;
+  background-attachment: fixed;
+  mix-blend-mode: difference;
+}
+
+.introGateOverlay .content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  flex-flow: column;
+  gap: 2rem;
+  text-align: center;
+  mix-blend-mode: difference;
+  -webkit-mix-blend-mode: difference;
+  filter: invert(1);
+}
+
+.introGateOverlay .h1--scalingSize {
+  font-size: calc(1rem - -3.5vw);
+  position: relative;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.introGateOverlay .gateButton {
+  cursor: pointer;
+  position: relative;
+  padding: 1rem 2.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform, box-shadow, border-color;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.introGateOverlay .gateButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.introGateOverlay .gateButton:hover::before {
+  left: 100%;
+}
+
+.introGateOverlay .gateButton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.3)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.introGateOverlay .gateButton:hover::after {
+  opacity: 1;
+}
+
+.introGateOverlay .gateButton:where(:hover, :active, :focus-visible) {
+  transform: translateY(-2px) scale(1.02);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.15),
+    0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.introGateOverlay .gateButton:active {
+  transform: translateY(0) scale(0.98);
+  transition: all 0.15s ease;
+}
+
+.introGateOverlay .gateButton span {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.introGateOverlay .gateButton:where(:hover, :active, :focus-visible) .icon {
+  animation-play-state: paused;
+  transform: translateX(4px);
+  transition: transform 0.3s ease;
+}
+
+.introGateOverlay .icon {
+  width: 1.2em;
+  height: 1.2em;
+  aspect-ratio: 1/1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  --blink-opacity: 1;
+  animation: blink-animation 2s ease-in-out infinite running;
+  transition: all 0.3s ease;
+  font-size: 0.9em;
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.introGateOverlay .h1--scalingSize::before {
+  display: none;
+}
+

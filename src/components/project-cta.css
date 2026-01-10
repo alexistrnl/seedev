@@ -1,0 +1,367 @@
+.project-cta-wrapper {
+  --width: 300px;
+  --height: calc(1.125rem + 2rem + 2rem); /* text-lg (18px) + py-4 top (16px) + py-4 bottom (16px) = ~50px */
+  --padding: 8px;
+  --border-radius: 24px;
+  --dot-size: 8px;
+  --btn-color: #262626;
+  --hue: 142deg;
+  --animation-duration: 1.2s;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--width);
+  height: var(--height);
+  border-radius: var(--border-radius);
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  transition: box-shadow 50ms linear;
+  perspective: 150px;
+  perspective-origin: center;
+  user-select: none;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.project-cta-wrapper-integrated {
+  --padding: 8px;
+  --border-radius: 16px;
+  --dot-size: 8px;
+  --btn-color: #262626;
+  --hue: 142deg;
+  --animation-duration: 1.2s;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+  caret-color: transparent;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  width: auto;
+  min-width: 80px;
+  overflow: visible;
+  position: relative;
+  z-index: 10;
+}
+
+.project-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0;
+  width: calc(100% - 2 * var(--padding));
+  height: calc(100% - 2 * var(--padding));
+  border-radius: calc(var(--border-radius) - var(--padding));
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05)), var(--btn-color);
+  box-shadow:
+    1px 1px 2px -1px rgba(255, 255, 255, 0.1) inset,
+    0 2px 1px rgba(0, 0, 0, 0.1),
+    0 4px 2px rgba(0, 0, 0, 0.1),
+    0 8px 4px rgba(0, 0, 0, 0.1),
+    0 16px 8px rgba(0, 0, 0, 0.1),
+    0 32px 16px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.25s cubic-bezier(0.25, 1.5, 0.5, 2.2),
+    box-shadow 0.25s cubic-bezier(0.25, 1.5, 0.5, 1),
+    filter 0.3s cubic-bezier(0.25, 1.5, 0.5, 1);
+  will-change: transform, filter;
+  z-index: 2;
+  position: relative;
+}
+
+.project-cta-btn-integrated {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 2rem;
+  border-radius: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: #262626;
+  box-shadow: none;
+  transition:
+    background-color 0.2s ease,
+    filter 0.3s cubic-bezier(0.25, 1.5, 0.5, 1);
+  will-change: background-color, filter;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  position: relative;
+  z-index: 10;
+  caret-color: transparent;
+  user-select: none;
+}
+
+.project-cta-btn-txt {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.project-cta-dot {
+  position: relative;
+  width: var(--dot-size);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: hsla(var(--hue), 0%, 50%, 0.1);
+  border: 1px solid hsla(var(--hue), 0%, 60%, 0.6);
+  box-sizing: border-box;
+  box-shadow:
+    1px 1px 2px -1px rgba(255, 255, 255, 0.2) inset,
+    0 2px 1px rgba(0, 0, 0, 0.1),
+    0 4px 2px rgba(0, 0, 0, 0.1),
+    0 8px 4px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  z-index: 20;
+  flex-shrink: 0;
+}
+
+.project-cta-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + var(--padding));
+  height: calc(100% + var(--padding));
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+  mask-image: radial-gradient(circle at 50% 60%, transparent 50%, black);
+}
+
+.project-cta-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + var(--padding) * 2);
+  height: calc(100% + var(--padding) * 2);
+  border-radius: 50%;
+  background-color: transparent;
+  box-shadow:
+    0 0 15px 3px hsla(var(--hue), 80%, 50%, 0.4),
+    0 0 30px 15px hsla(var(--hue), 80%, 50%, 0.6),
+    0 0 60px 25px hsla(var(--hue), 80%, 50%, 0.6),
+    0 0 20px 2px hsla(var(--hue), 100%, 60%, 0.9) inset;
+  opacity: 0;
+  z-index: -1;
+}
+
+.project-cta-dot.pulse {
+  transition: transform 200ms ease-in;
+  animation: bg-anim var(--animation-duration) ease-in-out infinite;
+}
+
+.project-cta-dot.pulse::after {
+  animation: opacity-anim var(--animation-duration) ease-in-out infinite;
+}
+
+@keyframes bg-anim {
+  0%,
+  100% {
+    background-color: hsla(var(--hue), 50%, 50%, 0);
+  }
+  50% {
+    background-color: hsla(var(--hue), 100%, 50%, 1);
+  }
+}
+
+@keyframes opacity-anim {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.project-cta-btn:hover,
+.project-cta-btn:focus-visible {
+  filter: drop-shadow(
+    var(--padding) 0 var(--padding) hsla(var(--hue), 70%, 60%, 0.6)
+  );
+  transform: translate3d(0, -2px, 2px);
+}
+
+.project-cta-btn-integrated:hover,
+.project-cta-btn-integrated:focus-visible {
+  background-color: #2a2a2a;
+  filter: none;
+}
+
+.project-cta-btn:hover .project-cta-btn-txt,
+.project-cta-btn:focus-visible .project-cta-btn-txt {
+  color: #fff;
+}
+
+.project-cta-btn:hover .project-cta-dot.pulse,
+.project-cta-btn:focus-visible .project-cta-dot.pulse {
+  animation: none;
+  background-color: hsla(var(--hue), 100%, 50%, 1);
+  border-radius: 50%;
+}
+
+.project-cta-btn-integrated:hover .project-cta-dot.pulse,
+.project-cta-btn-integrated:focus-visible .project-cta-dot.pulse {
+  animation: none;
+  background-color: hsla(var(--hue), 100%, 50%, 1);
+  border-radius: 50%;
+}
+
+.project-cta-btn:hover .project-cta-dot.pulse::before,
+.project-cta-btn:focus-visible .project-cta-dot.pulse::before {
+  border-radius: 50%;
+}
+
+.project-cta-btn-integrated:hover .project-cta-dot.pulse::before,
+.project-cta-btn-integrated:focus-visible .project-cta-dot.pulse::before {
+  border-radius: 50%;
+}
+
+.project-cta-btn:hover .project-cta-dot.pulse::after,
+.project-cta-btn:focus-visible .project-cta-dot.pulse::after {
+  animation: none;
+  opacity: 1;
+  border-radius: 50%;
+}
+
+.project-cta-btn-integrated:hover .project-cta-dot.pulse::after,
+.project-cta-btn-integrated:focus-visible .project-cta-dot.pulse::after {
+  animation: none;
+  opacity: 1;
+  border-radius: 50%;
+}
+
+.project-cta-btn:focus-visible {
+  outline: none;
+}
+
+.project-cta-btn-integrated:focus-visible {
+  outline: none;
+}
+
+.project-cta-btn:active {
+  filter: drop-shadow(
+    var(--padding) 0 var(--padding) hsla(var(--hue), 100%, 50%, 1)
+  );
+  transform: translate3d(0, 0, -4px);
+}
+
+.project-cta-btn-integrated:active {
+  background-color: #2f2f2f;
+  filter: none;
+}
+
+.project-cta-btn:active .project-cta-btn-txt {
+  color: #fff;
+}
+
+.project-cta-btn:active .project-cta-dot.pulse {
+  animation-play-state: paused;
+  background-color: hsla(var(--hue), 100%, 50%, 1);
+}
+
+.project-cta-btn-integrated:active .project-cta-dot.pulse {
+  animation-play-state: paused;
+  background-color: hsla(var(--hue), 100%, 50%, 1);
+}
+
+.project-cta-wrapper:has(.project-cta-btn:active) {
+  box-shadow: 0 0 32px 2px hsla(var(--hue), 50%, 50%, 0.5) inset;
+}
+
+.project-cta-btn-floating {
+  --padding: 8px;
+  --border-radius: 16px;
+  --dot-size: 8px;
+  --btn-color: #262626;
+  --hue: 142deg;
+  --animation-duration: 1.2s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  outline: none;
+  cursor: pointer;
+  background: rgba(38, 38, 38, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.2);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  overflow: visible;
+  position: relative;
+  z-index: 50;
+  animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.project-cta-btn-floating:hover {
+  background: rgba(42, 42, 42, 0.95);
+  transform: scale(1.05);
+  box-shadow:
+    0 6px 8px rgba(0, 0, 0, 0.4),
+    0 12px 20px rgba(0, 0, 0, 0.3);
+}
+
+.project-cta-btn-floating:active {
+  background: rgba(47, 47, 47, 0.95);
+  transform: scale(0.95);
+}
+
+.project-cta-btn-floating:focus-visible {
+  outline: none;
+}
+
+.project-cta-btn-floating:hover .project-cta-dot.pulse,
+.project-cta-btn-floating:focus-visible .project-cta-dot.pulse {
+  animation: none;
+  background-color: hsla(var(--hue), 100%, 50%, 1);
+  border-radius: 50%;
+}
+
+.project-cta-btn-floating:hover .project-cta-dot.pulse::after,
+.project-cta-btn-floating:focus-visible .project-cta-dot.pulse::after {
+  animation: none;
+  opacity: 1;
+  border-radius: 50%;
+}
+
+.project-cta-btn-floating:active .project-cta-dot.pulse {
+  animation-play-state: paused;
+  background-color: hsla(var(--hue), 100%, 50%, 1);
+}

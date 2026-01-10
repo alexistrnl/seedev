@@ -1,0 +1,152 @@
+/* Animations pour la section pricing */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.pricing-card {
+  animation: fadeInUp 0.6s ease-out forwards;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.pricing-card:nth-child(1) {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.pricing-card:nth-child(2) {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.pricing-card:hover {
+  transform: translateY(-8px);
+  border-color: rgb(64 64 64);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.pricing-price {
+  position: relative;
+  display: inline-block;
+}
+
+.pricing-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.pricing-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.pricing-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.pricing-cta-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.pricing-cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.pricing-cta-button:hover::before {
+  left: 100%;
+}
+
+.pricing-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.pricing-description {
+  position: relative;
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pricing-description::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: width 0.4s ease;
+}
+
+.pricing-card:hover .pricing-description::before {
+  width: 120px;
+}
+
+.pricing-description-line {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.pricing-description-line::before {
+  content: '→';
+  margin-right: 0.75rem;
+  margin-top: 0.1em;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.pricing-card:hover .pricing-description-line::before {
+  color: rgba(255, 255, 255, 0.8);
+  transform: translateX(4px);
+}
+
+.pricing-description-line:last-child {
+  margin-bottom: 0;
+}
+

@@ -1,0 +1,133 @@
+.top-menu {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+}
+
+.top-menu__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(38, 38, 38, 0.95);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.top-menu__button:hover {
+  background: rgba(42, 42, 42, 0.95);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.top-menu__button:active {
+  transform: scale(0.95);
+}
+
+.top-menu__icon {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 24px;
+  height: 18px;
+  position: relative;
+}
+
+.top-menu__line {
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: center;
+}
+
+.top-menu__line--open:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.top-menu__line--open:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.top-menu__line--open:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+.top-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 200px;
+  background: rgba(38, 38, 38, 0.98);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.4),
+    0 16px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: menuFadeIn 0.3s ease-out;
+}
+
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.top-menu__item {
+  display: block;
+  padding: 1rem 1.5rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.top-menu__item:last-child {
+  border-bottom: none;
+}
+
+.top-menu__item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  padding-left: 1.75rem;
+}
+
+.top-menu__item:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .top-menu {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .top-menu__button {
+    width: 45px;
+    height: 45px;
+  }
+
+  .top-menu__dropdown {
+    min-width: 180px;
+  }
+}
+
