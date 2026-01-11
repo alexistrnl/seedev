@@ -16,6 +16,8 @@ export function getAuthErrorMessage(errorCode: string, defaultMessage?: string):
     'auth/requires-recent-login': 'Cette opération nécessite une reconnexion récente',
     'auth/popup-closed-by-user': 'La fenêtre de connexion a été fermée',
     'auth/cancelled-popup-request': 'Connexion annulée',
+    'auth/expired-action-code': 'Lien expiré. Demande un nouvel email de vérification.',
+    'auth/invalid-action-code': 'Lien invalide ou déjà utilisé.',
   };
 
   if (errorCode && errorMessages[errorCode]) {

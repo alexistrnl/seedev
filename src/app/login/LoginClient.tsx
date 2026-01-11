@@ -22,8 +22,16 @@ export default function LoginClient() {
   useEffect(() => {
     // Vérifier si on vient de la page signup avec un message
     const reason = searchParams.get('reason');
+    const verified = searchParams.get('verified');
+    const error = searchParams.get('error');
+
     if (reason === 'verify') {
       setError('Vérifie ta boîte mail avant de te connecter.');
+      setShowVerificationMessage(true);
+    } else if (verified === '1') {
+      setSuccessMessage('Email vérifié avec succès ! Tu peux maintenant te connecter.');
+    } else if (error === 'verify') {
+      setError('La vérification a échoué. Le lien est peut-être expiré ou invalide.');
       setShowVerificationMessage(true);
     }
   }, [searchParams]);
