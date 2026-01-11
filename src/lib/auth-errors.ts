@@ -18,6 +18,7 @@ export function getAuthErrorMessage(errorCode: string, defaultMessage?: string):
     'auth/cancelled-popup-request': 'Connexion annulée',
     'auth/expired-action-code': 'Lien expiré. Demande un nouvel email de vérification.',
     'auth/invalid-action-code': 'Lien invalide ou déjà utilisé.',
+    'auth/too-many-requests': 'Trop de tentatives. Réessaie dans quelques minutes.',
   };
 
   if (errorCode && errorMessages[errorCode]) {
