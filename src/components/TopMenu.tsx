@@ -1,30 +1,16 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { pb } from '@/lib/pb';
+import { useAuth } from '@/hooks/useAuth';
+import { logout } from '@/lib/auth';
 import './top-menu.css';
 
 export default function TopMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user, isAuthenticated } = useAuth();
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    // Vérifier si l'utilisateur est connecté
-    setIsAuthenticated(pb.authStore.isValid);
-    
-    // Écouter les changements d'authentification
-    const unsubscribe = pb.authStore.onChange(() => {
-      setIsAuthenticated(pb.authStore.isValid);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -72,11 +58,18 @@ export default function TopMenu() {
           }
         },
         { 
-          label: 'Déconnexion', 
+          label: user?.displayName || user?.email || 'Déconnexion', 
           href: '#', 
           action: () => {
             setIsOpen(false);
-            pb.authStore.clear();
+          }
+        },
+        { 
+          label: 'Déconnexion', 
+          href: '#', 
+          action: async () => {
+            setIsOpen(false);
+            await logout();
             router.push('/');
           }
         },

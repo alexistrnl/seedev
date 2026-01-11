@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { pb } from '@/lib/pb';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { loginWithEmailPassword, resendVerificationEmail } from '@/lib/auth';
+import { getAuthErrorMessage } from '@/lib/auth-errors';
 import './login.css';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(true);
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isResendingVerification, setIsResendingVerification] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,13 +17,19 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
-    name: '',
   });
+
+  useEffect(() => {
+    // Vérifier si on vient de la page signup avec un message
+    const reason = searchParams.get('reason');
+    if (reason === 'verify') {
+      setError('Vérifie ta boîte mail avant de te connecter.');
+      setShowVerificationMessage(true);
+    }
+  }, [searchParams]);
 
   const handleBackToHome = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    // Marquer qu'on vient de la page de login AVANT la navigation
     sessionStorage.setItem('fromLogin', 'true');
     router.push('/');
   };
@@ -36,96 +42,28 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      if (isLogin) {
-        // Connexion avec PocketBase
-        const authData = await pb.collection('users').authWithPassword(
-          formData.email,
-          formData.password
-        );
-        
-        // Vérifier si l'email est vérifié
-        if (!authData.record.verified) {
-          pb.authStore.clear();
-          setError('Email non vérifié. Vérifie ta boîte mail ou renvoie l\'email de vérification.');
-          setShowVerificationMessage(true);
-          setIsLoading(false);
-          return;
-        }
-        
-        // Rediriger vers le dashboard après connexion réussie
-        router.push('/dashboard');
-      } else {
-        // Vérifier que les mots de passe correspondent
-        if (formData.password !== formData.confirmPassword) {
-          setError('Les mots de passe ne correspondent pas');
-          setIsLoading(false);
-          return;
-        }
-
-        // Créer un compte avec PocketBase
-        const data = {
-          email: formData.email,
-          password: formData.password,
-          passwordConfirm: formData.confirmPassword,
-          name: formData.name,
-        };
-
-        await pb.collection('users').create(data);
-        
-        // Envoyer l'email de vérification
-        try {
-          await pb.collection('users').requestVerification(formData.email);
-          setSuccessMessage('Compte créé ! Un email de vérification a été envoyé. Vérifie ta boîte mail avant de te connecter.');
-          setShowVerificationMessage(true);
-          setIsLoading(false);
-          // Passer à l'onglet connexion après inscription réussie
-          setTimeout(() => {
-            setIsLogin(true);
-            setFormData(prev => ({ ...prev, password: '', confirmPassword: '', name: '' }));
-          }, 2000);
-        } catch (verificationErr: any) {
-          // Le compte existe mais l'email n'a pas pu être envoyé
-          setError('Compte créé mais l\'email de vérification n\'a pas pu être envoyé. Clique sur "Renvoyer l\'email" ci-dessous.');
-          setShowVerificationMessage(true);
-          setIsLoading(false);
-        }
-      }
+      await loginWithEmailPassword(formData.email, formData.password);
+      
+      // Rediriger vers le dashboard ou la page d'accueil
+      router.push('/dashboard');
     } catch (err: any) {
-      // Gérer les erreurs PocketBase
-      if (err?.response?.data) {
-        const errorData = err.response.data;
-        if (errorData.email) {
-          setError(errorData.email.message || 'Erreur avec l\'email');
-          // Si c'est une erreur d'email non vérifié lors de la connexion
-          if (errorData.email.message?.toLowerCase().includes('vérif') || 
-              errorData.message?.toLowerCase().includes('vérif')) {
-            setShowVerificationMessage(true);
-          }
-        } else if (errorData.password) {
-          setError(errorData.password.message || 'Erreur avec le mot de passe');
-        } else if (errorData.message) {
-          const errorMsg = errorData.message.toLowerCase();
-          if (errorMsg.includes('vérif') || errorMsg.includes('verified')) {
-            setShowVerificationMessage(true);
-          }
-          setError(errorData.message);
-        } else {
-          setError('Une erreur est survenue. Veuillez réessayer.');
-        }
-      } else if (err?.message?.toLowerCase().includes('vérif') || 
-                 err?.message?.toLowerCase().includes('verified')) {
-        setError(err.message);
+      const errorCode = err?.code || '';
+      const errorMessage = err?.message || '';
+
+      if (errorMessage === 'EMAIL_NOT_VERIFIED') {
+        setError('Email non vérifié. Vérifie ta boîte mail ou renvoie l\'email de vérification.');
         setShowVerificationMessage(true);
       } else {
-        setError('Une erreur est survenue. Veuillez réessayer.');
+        setError(getAuthErrorMessage(errorCode, errorMessage));
       }
+    } finally {
       setIsLoading(false);
     }
   };
 
   const handleResendVerification = async () => {
-    if (!formData.email) {
-      setError('Veuillez saisir votre email d\'abord.');
+    if (!formData.email || !formData.password) {
+      setError('Veuillez remplir l\'email et le mot de passe d\'abord.');
       return;
     }
 
@@ -134,14 +72,11 @@ export default function LoginPage() {
     setIsResendingVerification(true);
 
     try {
-      await pb.collection('users').requestVerification(formData.email);
+      await resendVerificationEmail(formData.email, formData.password);
       setSuccessMessage('Email de vérification renvoyé ! Vérifie ta boîte mail.');
     } catch (err: any) {
-      if (err?.response?.data?.message) {
-        setError(`Impossible d'envoyer l'email. ${err.response.data.message}. Réessaie dans 1 min.`);
-      } else {
-        setError('Impossible d\'envoyer l\'email. Réessaie dans 1 min.');
-      }
+      const errorCode = err?.code || '';
+      setError(getAuthErrorMessage(errorCode, err?.message));
     } finally {
       setIsResendingVerification(false);
     }
@@ -171,40 +106,7 @@ export default function LoginPage() {
             <p className="login-subtitle">De l'idée au MVP</p>
           </div>
 
-          <div className="login-tabs">
-            <button
-              className={`login-tab ${isLogin ? 'login-tab--active' : ''}`}
-              onClick={() => setIsLogin(true)}
-            >
-              Se connecter
-            </button>
-            <button
-              className={`login-tab ${!isLogin ? 'login-tab--active' : ''}`}
-              onClick={() => setIsLogin(false)}
-            >
-              Créer un compte
-            </button>
-          </div>
-
           <form onSubmit={handleSubmit} className="login-form">
-            {!isLogin && (
-              <div className="login-field">
-                <label htmlFor="name" className="login-label">
-                  Nom
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="login-input"
-                  placeholder="Votre nom"
-                  required={!isLogin}
-                />
-              </div>
-            )}
-
             <div className="login-field">
               <label htmlFor="email" className="login-label">
                 Email
@@ -214,7 +116,7 @@ export default function LoginPage() {
                 name="email"
                 type="email"
                 value={formData.email}
-                onChange={handleChange}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="login-input"
                 placeholder="votre@email.com"
                 required
@@ -230,42 +132,22 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 value={formData.password}
-                onChange={handleChange}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 className="login-input"
                 placeholder="••••••••"
                 required
               />
             </div>
 
-            {!isLogin && (
-              <div className="login-field">
-                <label htmlFor="confirmPassword" className="login-label">
-                  Confirmer le mot de passe
-                </label>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="login-input"
-                  placeholder="••••••••"
-                  required={!isLogin}
-                />
-              </div>
-            )}
-
-            {isLogin && (
-              <div className="login-options">
-                <label className="login-checkbox">
-                  <input type="checkbox" />
-                  <span>Se souvenir de moi</span>
-                </label>
-                <a href="#" className="login-forgot">
-                  Mot de passe oublié ?
-                </a>
-              </div>
-            )}
+            <div className="login-options">
+              <label className="login-checkbox">
+                <input type="checkbox" />
+                <span>Se souvenir de moi</span>
+              </label>
+              <a href="#" className="login-forgot">
+                Mot de passe oublié ?
+              </a>
+            </div>
 
             {error && (
               <div className="login-error">
@@ -288,7 +170,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={handleResendVerification}
                   className="login-resend-btn"
-                  disabled={isResendingVerification || !formData.email}
+                  disabled={isResendingVerification || !formData.email || !formData.password}
                 >
                   {isResendingVerification ? 'Envoi...' : 'Renvoyer l\'email de vérification'}
                 </button>
@@ -300,12 +182,18 @@ export default function LoginPage() {
               className="login-submit"
               disabled={isLoading}
             >
-              {isLoading 
-                ? (isLogin ? 'Connexion...' : 'Création du compte...') 
-                : (isLogin ? 'Se connecter' : 'Créer mon compte')
-              }
+              {isLoading ? 'Connexion...' : 'Se connecter'}
             </button>
           </form>
+
+          <div className="login-signup-link">
+            <p>
+              Pas encore de compte ?{' '}
+              <a href="/signup" className="login-signup-link-text">
+                Créer un compte
+              </a>
+            </p>
+          </div>
 
           <div className="login-divider">
             <span>ou</span>

@@ -2,51 +2,54 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { pb } from '@/lib/pb';
+import { useAuth } from '@/hooks/useAuth';
+import { logout } from '@/lib/auth';
 import './dashboard.css';
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, loading } = useAuth();
   const [projects, setProjects] = useState<any[]>([]);
 
   useEffect(() => {
-    // Vérifier si l'utilisateur est connecté
-    if (!pb.authStore.isValid) {
+    // Si on charge encore, attendre
+    if (loading) return;
+
+    // Si pas d'utilisateur, rediriger vers login
+    if (!user) {
       router.push('/login');
       return;
     }
 
-    // Récupérer les informations de l'utilisateur
-    setUser(pb.authStore.model);
-    
+    // Si email non vérifié, rediriger vers login avec raison
+    if (!user.emailVerified) {
+      router.push('/login?reason=verify');
+      return;
+    }
+
     // Charger les projets de l'utilisateur
     loadProjects();
-    setIsLoading(false);
-  }, [router]);
+  }, [user, loading, router]);
 
   const loadProjects = async () => {
     try {
-      // Récupérer les projets de l'utilisateur connecté
-      const records = await pb.collection('projects').getList(1, 20, {
-        filter: `user = "${pb.authStore.model?.id}"`,
-        sort: '-created',
-      });
-      setProjects(records.items);
+      // TODO: Implémenter le chargement des projets avec la nouvelle base de données
+      // Exemple: const projectsData = await projectService.getUserProjects();
+      // setProjects(projectsData);
+      setProjects([]);
     } catch (error) {
-      // Si la collection n'existe pas encore, on continue sans erreur
-      console.log('Collection projects non disponible pour le moment');
+      console.log('Erreur lors du chargement des projets');
       setProjects([]);
     }
   };
 
-  const handleLogout = () => {
-    pb.authStore.clear();
+  const handleLogout = async () => {
+    await logout();
     router.push('/');
   };
 
-  if (isLoading) {
+  // Afficher un loader pendant le chargement de l'auth
+  if (loading) {
     return (
       <div className="dashboard-page">
         <div className="dashboard-loading">
@@ -57,6 +60,11 @@ export default function DashboardPage() {
     );
   }
 
+  // Si pas d'utilisateur ou email non vérifié, ne rien afficher (redirection en cours)
+  if (!user || !user.emailVerified) {
+    return null;
+  }
+
   return (
     <div className="dashboard-page">
       <div className="dashboard-container">
@@ -65,7 +73,7 @@ export default function DashboardPage() {
           <div className="dashboard-header-content">
             <h1 className="dashboard-title">SEEDEV</h1>
             <div className="dashboard-user-info">
-              <span className="dashboard-user-name">{user?.name || user?.email}</span>
+              <span className="dashboard-user-name">{user?.displayName || user?.email}</span>
               <button onClick={handleLogout} className="dashboard-logout-btn">
                 Déconnexion
               </button>
@@ -77,7 +85,7 @@ export default function DashboardPage() {
         <main className="dashboard-main">
           {/* Section Bienvenue */}
           <section className="dashboard-section">
-            <h2 className="dashboard-section-title">Bienvenue {user?.name || 'sur votre dashboard'} !</h2>
+            <h2 className="dashboard-section-title">Bienvenue {user?.displayName || user?.email || 'sur votre dashboard'} !</h2>
             <p className="dashboard-section-subtitle">
               Gérez vos projets et suivez leur avancement
             </p>
@@ -92,28 +100,26 @@ export default function DashboardPage() {
                   <span className="dashboard-info-label">Email</span>
                   <span className="dashboard-info-value">{user?.email}</span>
                 </div>
-                {user?.name && (
+                {user?.displayName && (
                   <div className="dashboard-info-item">
                     <span className="dashboard-info-label">Nom</span>
-                    <span className="dashboard-info-value">{user.name}</span>
+                    <span className="dashboard-info-value">{user.displayName}</span>
                   </div>
                 )}
                 <div className="dashboard-info-item">
-                  <span className="dashboard-info-label">Compte créé le</span>
+                  <span className="dashboard-info-label">Email vérifié</span>
                   <span className="dashboard-info-value">
-                    {user?.created ? new Date(user.created).toLocaleDateString('fr-FR') : 'N/A'}
+                    {user?.emailVerified ? '✓ Oui' : '✗ Non'}
                   </span>
                 </div>
-                <div className="dashboard-info-item">
-                  <span className="dashboard-info-label">Statut</span>
-                  <span className="dashboard-info-value">
-                    {user?.verified ? (
-                      <span className="status-verified">✓ Vérifié</span>
-                    ) : (
-                      <span className="status-unverified">En attente de vérification</span>
-                    )}
-                  </span>
-                </div>
+                {user?.metadata?.creationTime && (
+                  <div className="dashboard-info-item">
+                    <span className="dashboard-info-label">Compte créé le</span>
+                    <span className="dashboard-info-value">
+                      {new Date(user.metadata.creationTime).toLocaleDateString('fr-FR')}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </section>

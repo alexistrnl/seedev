@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import IntroGate from '@/components/IntroGate';
 import HeroSection from '@/components/HeroSection';
 import TopMenu from '@/components/TopMenu';
-import { pb } from '@/lib/pb';
 import '@/components/cards-section.css';
 import '@/components/pricing-section.css';
 import '@/components/project-cta.css';
@@ -17,11 +16,9 @@ function CardsSection() {
 
   const handleCTAClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    if (pb.authStore.isValid) {
-      router.push('/dashboard');
-    } else {
-      router.push('/login');
-    }
+    // TODO: Implémenter la vérification d'authentification avec la nouvelle base de données
+    // Exemple: if (authService.isAuthenticated()) { router.push('/dashboard'); } else { router.push('/login'); }
+    router.push('/login');
   };
 
   const cards = [
@@ -216,11 +213,9 @@ function Pricing() {
   };
 
   const handleCTAClick = () => {
-    if (pb.authStore.isValid) {
-      router.push('/dashboard');
-    } else {
-      router.push('/login');
-    }
+    // TODO: Implémenter la vérification d'authentification avec la nouvelle base de données
+    // Exemple: if (authService.isAuthenticated()) { router.push('/dashboard'); } else { router.push('/login'); }
+    router.push('/login');
   };
 
   return (
@@ -595,11 +590,9 @@ export default function Home() {
   }, []);
 
   const handleCTAClick = () => {
-    if (pb.authStore.isValid) {
-      router.push('/dashboard');
-    } else {
-      router.push('/login');
-    }
+    // TODO: Implémenter la vérification d'authentification avec la nouvelle base de données
+    // Exemple: if (authService.isAuthenticated()) { router.push('/dashboard'); } else { router.push('/login'); }
+    router.push('/login');
   };
 
   // Désactiver temporairement IntroGate
