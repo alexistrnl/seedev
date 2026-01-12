@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signupWithEmailPassword } from '@/lib/auth';
-import { getAuthErrorMessage } from '@/lib/auth-errors';
 import '../login/login.css';
 
 export default function SignupPage() {
@@ -51,8 +50,17 @@ export default function SignupPage() {
         router.push('/login?reason=verify');
       }, 3000);
     } catch (err: any) {
-      const errorCode = err?.code || '';
-      setError(getAuthErrorMessage(errorCode, err?.message));
+      const errorData = err?.response?.data || {};
+      
+      if (errorData.email) {
+        setError(errorData.email.message || 'Erreur avec l\'email');
+      } else if (errorData.password) {
+        setError(errorData.password.message || 'Erreur avec le mot de passe');
+      } else if (errorData.message) {
+        setError(errorData.message);
+      } else {
+        setError(err?.message || 'Une erreur est survenue lors de la création du compte.');
+      }
     } finally {
       setIsLoading(false);
     }

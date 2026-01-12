@@ -2,9 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { applyActionCode } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
-import { getAuthErrorMessage } from '@/lib/auth-errors';
+import { pb } from '@/lib/pocketbase';
 
 function VerifyEmailContent() {
   const router = useRouter();
@@ -14,39 +12,45 @@ function VerifyEmailContent() {
 
   useEffect(() => {
     const verifyEmail = async () => {
-      const mode = searchParams.get('mode');
-      const oobCode = searchParams.get('oobCode');
+      // Lire le paramètre 'code' depuis l'URL (PocketBase utilise 'code')
+      const code = searchParams.get('code');
 
-      // Vérifier que oobCode est présent
-      if (!oobCode) {
+      // Vérifier que code est présent
+      if (!code) {
         setStatus('error');
         setErrorMessage('Lien invalide. Aucun code de vérification trouvé.');
-        return;
-      }
-
-      // Vérifier que mode est correct
-      if (mode !== 'verifyEmail') {
-        setStatus('error');
-        setErrorMessage('Lien invalide. Mode de vérification incorrect.');
+        setTimeout(() => {
+          router.replace('/login?error=verify');
+        }, 3000);
         return;
       }
 
       try {
-        // Appliquer le code de vérification
-        await applyActionCode(auth, oobCode);
+        // Appliquer le code de vérification avec PocketBase
+        await pb.collection('users').confirmVerification(code);
         
         // Succès
         setStatus('success');
         
-        // Rediriger vers login après un court délai
+        // Rediriger vers login après un court délai (2-3 secondes)
         setTimeout(() => {
           router.replace('/login?verified=1');
-        }, 2000);
+        }, 2500);
       } catch (error: any) {
+        // Logger l'erreur brute pour le debugging
+        console.error('[Auth Verify] Erreur de vérification:', error);
+        console.error('[Auth Verify] Error response:', error?.response);
+        console.error('[Auth Verify] Error data:', error?.response?.data);
+        
         // Gérer l'erreur
-        const errorCode = error?.code || '';
+        const errorData = error?.response?.data || {};
         setStatus('error');
-        setErrorMessage(getAuthErrorMessage(errorCode, 'Lien invalide ou expiré.'));
+        
+        if (errorData.message) {
+          setErrorMessage(errorData.message);
+        } else {
+          setErrorMessage('Lien invalide ou expiré.');
+        }
         
         // Rediriger vers login après un court délai
         setTimeout(() => {

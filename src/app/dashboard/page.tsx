@@ -21,7 +21,7 @@ export default function DashboardPage() {
       return;
     }
 
-    // Si email non vérifié, rediriger vers login avec raison
+    // Vérifier si l'email est vérifié
     if (!user.emailVerified) {
       router.push('/login?reason=verify');
       return;
@@ -60,8 +60,8 @@ export default function DashboardPage() {
     );
   }
 
-  // Si pas d'utilisateur ou email non vérifié, ne rien afficher (redirection en cours)
-  if (!user || !user.emailVerified) {
+  // Si pas d'utilisateur, ne rien afficher (redirection en cours)
+  if (!user) {
     return null;
   }
 

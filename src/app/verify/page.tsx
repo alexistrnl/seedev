@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { resendVerificationEmail } from '@/lib/auth';
-import { getAuthErrorMessage } from '@/lib/auth-errors';
 import '../login/login.css';
 
 export default function VerifyPage() {
@@ -44,7 +43,7 @@ export default function VerifyPage() {
           router.push('/dashboard');
         }, 2000);
       } else {
-        setError(getAuthErrorMessage(errorCode, errorMessage));
+        setError(errorMessage || 'Une erreur est survenue. Veuillez réessayer.');
       }
     } finally {
       setIsResending(false);

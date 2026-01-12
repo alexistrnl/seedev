@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loginWithEmailPassword, resendVerificationEmail } from '@/lib/auth';
-import { getAuthErrorMessage } from '@/lib/auth-errors';
 import './login.css';
 
 export default function LoginClient() {
@@ -55,14 +54,20 @@ export default function LoginClient() {
       // Rediriger vers le dashboard ou la page d'accueil
       router.push('/dashboard');
     } catch (err: any) {
-      const errorCode = err?.code || '';
       const errorMessage = err?.message || '';
+      const errorData = err?.response?.data || {};
 
       if (errorMessage === 'EMAIL_NOT_VERIFIED') {
         setError('Email non vérifié. Vérifie ta boîte mail ou renvoie l\'email de vérification.');
         setShowVerificationMessage(true);
+      } else if (errorData.email) {
+        setError(errorData.email.message || 'Erreur avec l\'email');
+      } else if (errorData.password) {
+        setError(errorData.password.message || 'Erreur avec le mot de passe');
+      } else if (errorData.message) {
+        setError(errorData.message);
       } else {
-        setError(getAuthErrorMessage(errorCode, errorMessage));
+        setError(errorMessage || 'Identifiants incorrects ou erreur de connexion.');
       }
     } finally {
       setIsLoading(false);
@@ -83,8 +88,12 @@ export default function LoginClient() {
       await resendVerificationEmail(formData.email, formData.password);
       setSuccessMessage('Email de vérification renvoyé ! Vérifie ta boîte mail.');
     } catch (err: any) {
-      const errorCode = err?.code || '';
-      setError(getAuthErrorMessage(errorCode, err?.message));
+      const errorMessage = err?.message || '';
+      if (errorMessage === 'EMAIL_ALREADY_VERIFIED') {
+        setSuccessMessage('Ton email est déjà vérifié !');
+      } else {
+        setError(errorMessage || 'Impossible d\'envoyer l\'email. Réessaie dans 1 min.');
+      }
     } finally {
       setIsResendingVerification(false);
     }

@@ -1,8 +1,26 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Configuration
+
+### Variables d'environnement
+
+Créez un fichier `.env.local` à la racine du projet avec :
+
+```env
+NEXT_PUBLIC_PB_URL=http://145.223.33.70:8090
+```
+
+Si `NEXT_PUBLIC_PB_URL` n'est pas défini, l'application utilisera l'URL par défaut `http://145.223.33.70:8090`.
+
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
