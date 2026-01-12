@@ -1,0 +1,332 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap");
+
+*,
+*:before,
+*:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.login-signup-page {
+  min-height: 100vh;
+  background-color: #080710;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  transition: color 0.3s ease;
+  margin-top: 1.5rem;
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.login-back-link:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.background {
+  width: 800px;
+  height: 900px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+}
+
+.background .shape {
+  height: 400px;
+  width: 400px;
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+
+.shape-blue {
+  background: linear-gradient(
+    rgba(59, 130, 246, 0.8),
+    rgba(147, 197, 253, 0.6)
+  );
+  left: -80px;
+  top: -80px;
+  animation: float1 15s ease-in-out infinite;
+}
+
+.shape-purple {
+  background: linear-gradient(
+    to right,
+    rgba(168, 85, 247, 0.8),
+    rgba(196, 181, 253, 0.6)
+  );
+  right: -30px;
+  bottom: -80px;
+  animation: float2 18s ease-in-out infinite;
+}
+
+@keyframes float1 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(30px, -30px);
+  }
+}
+
+@keyframes float2 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-30px, 30px);
+  }
+}
+
+/* Mode Toggle */
+.mode-toggle {
+  display: flex;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  padding: 0.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.875rem 2rem;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+}
+
+.toggle-btn:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.toggle-btn.active {
+  background: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.auth-form {
+  height: auto;
+  min-height: 750px;
+  width: 600px;
+  background-color: rgba(255, 255, 255, 0.13);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 70px 55px;
+  z-index: 1;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.auth-form * {
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+.auth-form h3 {
+  font-size: 42px;
+  font-weight: 500;
+  line-height: 52px;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+label {
+  display: block;
+  margin-top: 40px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+input {
+  display: block;
+  height: 70px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 0 20px;
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: 300;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+::placeholder {
+  color: #e5e5e5;
+}
+
+button[type="submit"] {
+  margin-top: 55px;
+  width: 100%;
+  background-color: #ffffff;
+  color: #080710;
+  padding: 20px 0;
+  font-size: 22px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Messages */
+.form-error {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem;
+  text-align: center;
+}
+
+.form-success {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem;
+  text-align: center;
+}
+
+.form-verification {
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.form-verification p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.resend-btn {
+  background: rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.resend-btn:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.4);
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+.resend-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .login-signup-page {
+    padding: 1rem;
+  }
+
+  .background {
+    width: 300px;
+    height: 400px;
+  }
+
+  .background .shape {
+    height: 150px;
+    width: 150px;
+  }
+
+  .auth-form {
+    width: 90%;
+    max-width: 400px;
+    padding: 40px 25px;
+    min-height: auto;
+  }
+
+  .auth-form h3 {
+    font-size: 28px;
+  }
+
+  .login-back-link {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .mode-toggle {
+    top: 1rem;
+    right: 1rem;
+  }
+}

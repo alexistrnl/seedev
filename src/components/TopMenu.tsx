@@ -58,13 +58,6 @@ export default function TopMenu() {
           }
         },
         { 
-          label: user?.displayName || user?.email || 'Utilisateur', 
-          href: '#', 
-          action: () => {
-            setIsOpen(false);
-          }
-        },
-        { 
           label: 'Déconnexion', 
           href: '#', 
           action: async () => {

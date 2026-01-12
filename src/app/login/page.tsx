@@ -1,12 +1,12 @@
 import { Suspense } from 'react';
-import LoginClient from './LoginClient';
+import LoginSignupClient from './LoginSignupClient';
 
 export const dynamic = 'force-dynamic';
 
 export default function LoginPage() {
   return (
     <Suspense fallback={<div style={{ padding: '24px', textAlign: 'center', color: '#fff' }}>Chargement…</div>}>
-      <LoginClient />
+      <LoginSignupClient />
     </Suspense>
   );
 }
