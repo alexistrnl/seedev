@@ -10,11 +10,12 @@
 
 .login-signup-page {
   min-height: 100vh;
+  max-height: 100vh;
   background-color: #080710;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1.5rem;
   position: relative;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
@@ -104,18 +105,18 @@
   border: 2px solid rgba(255, 255, 255, 0.15);
   border-radius: 14px;
   padding: 0.5rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .toggle-btn {
   flex: 1;
-  padding: 0.875rem 2rem;
+  padding: 0.75rem 1.5rem;
   background: transparent;
   border: none;
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.7);
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -135,7 +136,8 @@
 
 .auth-form {
   height: auto;
-  min-height: 750px;
+  min-height: auto;
+  max-height: 90vh;
   width: 600px;
   background-color: rgba(255, 255, 255, 0.13);
   position: absolute;
@@ -146,9 +148,11 @@
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-  padding: 70px 55px;
+  padding: 50px 45px;
   z-index: 1;
   animation: fadeIn 0.5s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 @keyframes fadeIn {
@@ -171,29 +175,29 @@
 }
 
 .auth-form h3 {
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 500;
-  line-height: 52px;
+  line-height: 44px;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 label {
   display: block;
-  margin-top: 40px;
-  font-size: 20px;
+  margin-top: 30px;
+  font-size: 18px;
   font-weight: 500;
 }
 
 input {
   display: block;
-  height: 70px;
+  height: 60px;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.07);
   border-radius: 10px;
-  padding: 0 20px;
-  margin-top: 12px;
-  font-size: 18px;
+  padding: 0 18px;
+  margin-top: 10px;
+  font-size: 16px;
   font-weight: 300;
   transition: all 0.3s ease;
 }
@@ -208,12 +212,12 @@ input:focus {
 }
 
 button[type="submit"] {
-  margin-top: 55px;
+  margin-top: 40px;
   width: 100%;
   background-color: #ffffff;
   color: #080710;
-  padding: 20px 0;
-  font-size: 22px;
+  padding: 16px 0;
+  font-size: 18px;
   font-weight: 600;
   border-radius: 10px;
   cursor: pointer;
@@ -291,6 +295,25 @@ button[type="submit"]:disabled {
 .resend-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Custom Scrollbar */
+.auth-form::-webkit-scrollbar {
+  width: 8px;
+}
+
+.auth-form::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.auth-form::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.auth-form::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Responsive */

@@ -63,9 +63,31 @@
   position: relative;
   z-index: 1;
   min-height: 100vh;
+  max-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+.dashboard-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dashboard-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.dashboard-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.dashboard-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 @media (min-width: 1024px) {
@@ -104,13 +126,14 @@
 .dashboard-main-cards {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: 3rem;
   width: 100%;
   max-width: 900px;
   align-items: center;
   animation: slideUpCards 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   opacity: 0;
   transform: translateY(30px);
+  padding: 1rem 0;
 }
 
 @keyframes slideUpCards {
@@ -124,7 +147,7 @@
 .dashboard-card-container {
   perspective: 50em;
   width: 100%;
-  max-width: 650px;
+  max-width: 600px;
   opacity: 0;
   animation: fadeInCard 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -164,7 +187,7 @@
 .dashboard-card {
   position: relative;
   width: 100%;
-  padding: 3.5em;
+  padding: 2.5em;
   color: #fff;
   transform: rotateY(20deg) rotateX(10deg);
   transform-style: preserve-3d;
@@ -175,7 +198,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--card-border, rgba(34, 197, 94, 0.1));
-  min-height: 400px;
+  min-height: 320px;
 }
 
 /* Par défaut : carte du haut en position normale, carte du bas en position hover (opposées) */
@@ -221,16 +244,16 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   position: relative;
   z-index: 1;
-  gap: 2.5rem;
-  padding-bottom: 1.5rem;
+  gap: 2rem;
+  padding-bottom: 1.25rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .dashboard-main-card-title {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 800;
   text-transform: uppercase;
   margin: 0;
@@ -246,13 +269,13 @@
 }
 
 .dashboard-main-card-icon {
-  font-size: 2.8rem;
-  width: 90px;
-  height: 90px;
+  font-size: 2.4rem;
+  width: 75px;
+  height: 75px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
+  border-radius: 18px;
   font-weight: 300;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -312,8 +335,8 @@
 }
 
 .dashboard-main-card-description {
-  font-size: 1.1rem;
-  line-height: 1.75;
+  font-size: 1rem;
+  line-height: 1.6;
   color: rgba(255, 255, 255, 0.75);
   margin: 0;
   position: relative;
