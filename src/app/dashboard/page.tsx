@@ -28,6 +28,7 @@ export default function DashboardPage() {
   const { user, loading } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoadingProjects, setIsLoadingProjects] = useState(false);
+  const [projectIntakesCount, setProjectIntakesCount] = useState<number>(0);
 
   useEffect(() => {
     // Si on charge encore, attendre
@@ -47,6 +48,8 @@ export default function DashboardPage() {
 
     // Charger les projets de l'utilisateur
     loadProjects();
+    // Charger le nombre de project_intakes
+    loadProjectIntakesCount();
   }, [user, loading, router]);
 
   // FETCH PROJETS: Charger les projets de l'utilisateur depuis PocketBase
@@ -68,6 +71,25 @@ export default function DashboardPage() {
       setProjects([]);
     } finally {
       setIsLoadingProjects(false);
+    }
+  };
+
+  // FETCH PROJECT_INTAKES COUNT: Charger le nombre de project_intakes de l'utilisateur
+  const loadProjectIntakesCount = async () => {
+    if (!pb.authStore.isValid || !pb.authStore.model) {
+      setProjectIntakesCount(0);
+      return;
+    }
+
+    try {
+      // Utiliser getList avec totalItems pour optimiser (ne charge pas tous les enregistrements)
+      const res = await pb.collection('project_intakes').getList(1, 1, {
+        filter: `owner = "${pb.authStore.model.id}"`,
+      });
+      setProjectIntakesCount(res.totalItems);
+    } catch (error: any) {
+      console.error('[Dashboard] Erreur lors du chargement du nombre de project_intakes:', error);
+      setProjectIntakesCount(0);
     }
   };
 
@@ -139,7 +161,11 @@ export default function DashboardPage() {
 
           {/* Carte 2: Mes projets */}
           <div className="dashboard-card-container dashboard-card-container-projects">
-            <div className="dashboard-card dashboard-card-projects">
+            <div 
+              className="dashboard-card dashboard-card-projects"
+              onClick={() => router.push('/projects')}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="dashboard-main-card-header">
                 <h2 className="dashboard-main-card-title">Mes projets</h2>
                 <div className="dashboard-main-card-icon">
@@ -153,7 +179,7 @@ export default function DashboardPage() {
               <div className="dashboard-projects-loading">
                 <p>Chargement des projets...</p>
               </div>
-            ) : projects.length === 0 ? (
+            ) : projectIntakesCount === 0 ? (
               <div className="dashboard-projects-empty">
                 <p>Aucun projet pour le moment</p>
                 <p className="dashboard-projects-empty-hint">
@@ -161,6 +187,15 @@ export default function DashboardPage() {
                 </p>
               </div>
             ) : (
+              <>
+                <div className="dashboard-projects-intro">
+                  <p className="dashboard-projects-intro-text">
+                    Retrouvez ici tous vos projets créés :
+                  </p>
+                  <p className="dashboard-projects-count">
+                    {projectIntakesCount} {projectIntakesCount === 1 ? 'projet sauvegardé' : 'projets sauvegardés'}
+                  </p>
+                </div>
               <div className="dashboard-projects-list">
                 {projects.map((project) => (
                   <div 
@@ -194,6 +229,7 @@ export default function DashboardPage() {
                   </div>
                 ))}
               </div>
+              </>
             )}
               <div className="dashboard-layers">
                 <div className="dashboard-layer"></div>
