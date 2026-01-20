@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { pb } from '@/lib/pocketbase';
-import { MAPPINGS, MAPPINGS_V1, type IntakeAnswers, isV2 } from '@/lib/intake';
+import { MAPPINGS, MAPPINGS_V1, type IntakeAnswers, type IntakeAnswersV2, isV2 } from '@/lib/intake';
 import RichTextEditor from '@/components/RichTextEditor';
 import './admin.css';
 
@@ -27,6 +27,7 @@ interface ProjectIntake {
   analysis?: string;
   recommendation?: string;
   analysis_sent_at?: string;
+  audience?: string[]; // Champ dérivé depuis answers (V1) ou stocké séparément
   needs_db: boolean;
   needs_ai: boolean;
   needs_integrations: boolean;
@@ -873,7 +874,17 @@ function ProjectDetailsView({
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Cible principale</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.target, (answers as any).business?.q2_target)}</p>
+                  <p className="admin-project-details-field-value">
+                    {(() => {
+                      // Pour V2, utiliser answers.business.q2_target, sinon utiliser project.audience[0]
+                      const targetSlug = isAnswersV2 
+                        ? (answers as IntakeAnswersV2).business?.q2_target
+                        : project.audience?.[0];
+                      // Utiliser MAPPINGS.target pour V2 (qui correspond à audience), ou mappings.audience pour V1
+                      const targetMapping = isAnswersV2 ? MAPPINGS.target : mappings.audience;
+                      return getLabelFromSlug(targetMapping, targetSlug);
+                    })()}
+                  </p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Fréquence</label>
