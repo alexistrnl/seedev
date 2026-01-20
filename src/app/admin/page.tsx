@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { pb } from '@/lib/pocketbase';
-import { MAPPINGS, MAPPINGS_V1, type IntakeAnswers, type IntakeAnswersV2, isV2 } from '@/lib/intake';
+import { MAPPINGS, MAPPINGS_V1, type IntakeAnswers, type IntakeAnswersV1, type IntakeAnswersV2, isV2 } from '@/lib/intake';
 import RichTextEditor from '@/components/RichTextEditor';
 import './admin.css';
 
@@ -732,7 +732,6 @@ function ProjectDetailsView({
 }) {
   const answers = project.answers || {};
   const isAnswersV2 = isV2(answers);
-  const mappings = isAnswersV2 ? MAPPINGS : MAPPINGS_V1;
 
   const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
@@ -859,7 +858,7 @@ function ProjectDetailsView({
               <div className="admin-project-details-section-content">
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Nom du projet</label>
-                  <p className="admin-project-details-field-value">{renderTextField((answers as any).identity?.q0_project_name)}</p>
+                  <p className="admin-project-details-field-value">{renderTextField((answers as IntakeAnswersV2).identity?.q0_project_name)}</p>
                 </div>
               </div>
             </div>
@@ -870,7 +869,7 @@ function ProjectDetailsView({
               <div className="admin-project-details-section-content">
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Problème principal</label>
-                  <p className="admin-project-details-field-value">{renderTextField((answers as any).business?.q1_problem)}</p>
+                  <p className="admin-project-details-field-value">{renderTextField((answers as IntakeAnswersV2).business?.q1_problem)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Cible principale</label>
@@ -880,39 +879,39 @@ function ProjectDetailsView({
                       const targetSlug = isAnswersV2 
                         ? (answers as IntakeAnswersV2).business?.q2_target
                         : project.audience?.[0];
-                      // Utiliser MAPPINGS.target pour V2 (qui correspond à audience), ou mappings.audience pour V1
-                      const targetMapping = isAnswersV2 ? MAPPINGS.target : mappings.audience;
+                      // Utiliser MAPPINGS.target pour V2 (qui correspond à audience), ou MAPPINGS_V1.audience pour V1
+                      const targetMapping = isAnswersV2 ? MAPPINGS.target : MAPPINGS_V1.audience;
                       return getLabelFromSlug(targetMapping, targetSlug);
                     })()}
                   </p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Fréquence</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.frequency, (answers as any).business?.q3_frequency)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.frequency, (answers as IntakeAnswersV2).business?.q3_frequency)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Solution actuelle</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.currentSolution, (answers as any).business?.q4_current_solution)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.currentSolution, (answers as IntakeAnswersV2).business?.q4_current_solution)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Pourquoi intéressant</label>
-                  <p className="admin-project-details-field-value">{renderTextField((answers as any).business?.q5_interesting)}</p>
+                  <p className="admin-project-details-field-value">{renderTextField((answers as IntakeAnswersV2).business?.q5_interesting)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Prix estimé</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.priceRange, (answers as any).business?.q6_price_range)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.priceRange, (answers as IntakeAnswersV2).business?.q6_price_range)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Modèle revenu</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.revenueModel, (answers as any).business?.q7_revenue_model)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.revenueModel, (answers as IntakeAnswersV2).business?.q7_revenue_model)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Concurrence</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.competition, (answers as any).business?.q8_competition)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.competition, (answers as IntakeAnswersV2).business?.q8_competition)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Point flou/incertain</label>
-                  <p className="admin-project-details-field-value">{renderTextField((answers as any).business?.q9_uncertainty)}</p>
+                  <p className="admin-project-details-field-value">{renderTextField((answers as IntakeAnswersV2).business?.q9_uncertainty)}</p>
                 </div>
               </div>
             </div>
@@ -923,23 +922,23 @@ function ProjectDetailsView({
               <div className="admin-project-details-section-content">
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Action dès arrivée</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.firstAction, (answers as any).product?.q10_first_action)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.firstAction, (answers as IntakeAnswersV2).product?.q10_first_action)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Parcours étapes</label>
-                  <p className="admin-project-details-field-value">{renderTextField((answers as any).product?.q11_flow_steps)}</p>
+                  <p className="admin-project-details-field-value">{renderTextField((answers as IntakeAnswersV2).product?.q11_flow_steps)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Raison de revenir</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.returnReason, (answers as any).product?.q12_return_reason)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.returnReason, (answers as IntakeAnswersV2).product?.q12_return_reason)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">À retrouver au retour</label>
-                  <p className="admin-project-details-field-value">{renderArrayField((answers as any).product?.q13_return_items, mappings.returnItems)}</p>
+                  <p className="admin-project-details-field-value">{renderArrayField((answers as IntakeAnswersV2).product?.q13_return_items, MAPPINGS.returnItems)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Besoin de compte</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.needAccount, (answers as any).product?.q14_need_account)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.needAccount, (answers as IntakeAnswersV2).product?.q14_need_account)}</p>
                 </div>
               </div>
             </div>
@@ -950,19 +949,19 @@ function ProjectDetailsView({
               <div className="admin-project-details-section-content">
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">À stocker</label>
-                  <p className="admin-project-details-field-value">{renderArrayField((answers as any).tech?.q15_store_what, mappings.storeWhat)}</p>
+                  <p className="admin-project-details-field-value">{renderArrayField((answers as IntakeAnswersV2).tech?.q15_store_what, isAnswersV2 ? MAPPINGS.storeWhat : undefined)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">IA</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.aiType, (answers as any).tech?.q16_ai_type)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(isAnswersV2 ? MAPPINGS.aiType : undefined, (answers as IntakeAnswersV2).tech?.q16_ai_type)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Intégrations</label>
-                  <p className="admin-project-details-field-value">{renderArrayField((answers as any).tech?.q17_integrations, mappings.integrations)}</p>
+                  <p className="admin-project-details-field-value">{renderArrayField((answers as IntakeAnswersV2).tech?.q17_integrations, isAnswersV2 ? MAPPINGS.integrations : undefined)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Type de site</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.siteType, (answers as any).tech?.q18_site_type)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(isAnswersV2 ? MAPPINGS.siteType : undefined, (answers as IntakeAnswersV2).tech?.q18_site_type)}</p>
                 </div>
               </div>
             </div>
@@ -973,19 +972,19 @@ function ProjectDetailsView({
               <div className="admin-project-details-section-content">
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Références</label>
-                  <p className="admin-project-details-field-value">{renderTextField((answers as any).design?.q19_references)}</p>
+                  <p className="admin-project-details-field-value">{renderTextField((answers as IntakeAnswersV2).design?.q19_references)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Style</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.designStyle, (answers as any).design?.q20_style)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.designStyle, (answers as IntakeAnswersV2).design?.q20_style)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Focus homepage</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.homepageFocus, (answers as any).design?.q21_home_focus)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.homepageFocus, (answers as IntakeAnswersV2).design?.q21_home_focus)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Output final</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.outputType, (answers as any).design?.q22_output_type)}</p>
+                  <p className="admin-project-details-field-value">{getLabelFromSlug(MAPPINGS.outputType, (answers as IntakeAnswersV2).design?.q22_output_type)}</p>
                 </div>
               </div>
             </div>
@@ -996,7 +995,7 @@ function ProjectDetailsView({
               <div className="admin-project-details-section-content">
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Pitch A à Z</label>
-                  <p className="admin-project-details-field-value admin-project-details-field-value-long">{renderTextField((answers as any).final?.q23_pitch)}</p>
+                  <p className="admin-project-details-field-value admin-project-details-field-value-long">{renderTextField((answers as IntakeAnswersV2).final?.q23_pitch)}</p>
                 </div>
               </div>
             </div>
@@ -1009,15 +1008,15 @@ function ProjectDetailsView({
               <div className="admin-project-details-section-content">
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Nom du projet</label>
-                  <p className="admin-project-details-field-value">{renderTextField((answers as any).q0_project_name)}</p>
+                  <p className="admin-project-details-field-value">{renderTextField((answers as IntakeAnswersV1).q0_project_name)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Utilité principale</label>
-                  <p className="admin-project-details-field-value">{renderTextField((answers as any).q1_utility)}</p>
+                  <p className="admin-project-details-field-value">{renderTextField((answers as IntakeAnswersV1).q1_utility)}</p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Public cible</label>
-                  <p className="admin-project-details-field-value">{renderArrayField((answers as any).q2_audience, mappings.audience)}</p>
+                  <p className="admin-project-details-field-value">{renderArrayField((answers as IntakeAnswersV1).q2_audience, MAPPINGS_V1.audience)}</p>
                 </div>
               </div>
             </div>
