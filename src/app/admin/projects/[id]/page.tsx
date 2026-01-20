@@ -254,9 +254,8 @@ export default function AdminProjectDetailPage() {
 
   const answers = project.answers || {};
   
-  // Sélectionner les mappings selon la version (détection basée sur la structure)
+  // Détecter la version basée sur la structure
   const hasV2Structure = answers && typeof answers === 'object' && 'v' in answers && (answers as any).v === 2;
-  const mappings = hasV2Structure ? MAPPINGS : MAPPINGS_V1;
 
   return (
     <div className="admin-detail-page">
@@ -368,7 +367,9 @@ export default function AdminProjectDetailPage() {
                           project?.audience?.[0] ??
                           null;
                         
-                        return getLabelFromSlug(mappings.audience, targetSlug);
+                        // audience existe dans les deux versions, utiliser le mapping approprié
+                        const audienceMapping = hasV2Structure ? MAPPINGS.audience : MAPPINGS_V1.audience;
+                        return getLabelFromSlug(audienceMapping, targetSlug);
                       })()}
                     </p>
                   </div>
@@ -500,8 +501,8 @@ export default function AdminProjectDetailPage() {
                       {(() => {
                         const answersAny = (project?.answers ?? {}) as any;
                         const returnItems = answersAny?.product?.q13_return_items ?? null;
-                        // returnItems existe dans les deux versions
-                        return renderArrayField(returnItems, mappings.returnItems);
+                        // returnItems existe dans les deux versions, utiliser MAPPINGS dans la section V2
+                        return renderArrayField(returnItems, MAPPINGS.returnItems);
                       })()}
                     </p>
                   </div>
@@ -557,8 +558,8 @@ export default function AdminProjectDetailPage() {
                       {(() => {
                         const answersAny = (project?.answers ?? {}) as any;
                         const integrations = answersAny?.tech?.q17_integrations ?? null;
-                        // integrations existe dans les deux versions
-                        return renderArrayField(integrations, mappings.integrations);
+                        // integrations existe dans les deux versions, utiliser MAPPINGS dans la section V2
+                        return renderArrayField(integrations, MAPPINGS.integrations);
                       })()}
                     </p>
                   </div>
@@ -572,8 +573,8 @@ export default function AdminProjectDetailPage() {
                           answersAny?.q13_site_type ??
                           (project as any)?.site_type ??
                           null;
-                        // siteType existe dans les deux versions
-                        return getLabelFromSlug(mappings.siteType, siteTypeSlug);
+                        // siteType existe dans les deux versions, utiliser MAPPINGS dans la section V2
+                        return getLabelFromSlug(MAPPINGS.siteType, siteTypeSlug);
                       })()}
                     </p>
                   </div>
@@ -664,7 +665,7 @@ export default function AdminProjectDetailPage() {
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Public cible</label>
-                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q2_audience, mappings.audience)}</p>
+                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q2_audience, MAPPINGS_V1.audience)}</p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Problème résolu ou bénéfice apporté</label>
@@ -676,7 +677,7 @@ export default function AdminProjectDetailPage() {
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Modèle de monétisation</label>
-                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q5_monetization, mappings.monetization)}</p>
+                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q5_monetization, MAPPINGS_V1.monetization)}</p>
                   </div>
                 </div>
               </div>
@@ -687,7 +688,7 @@ export default function AdminProjectDetailPage() {
                 <div className="admin-detail-section-content">
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Action principale attendue</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.mainAction, (answers as any).q6_main_action)}</p>
+                    <p className="admin-detail-field-value">{getLabelFromSlug(MAPPINGS_V1.mainAction, (answers as any).q6_main_action)}</p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Après la première action</label>
@@ -695,15 +696,15 @@ export default function AdminProjectDetailPage() {
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Type d'utilisation</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.usageType, (answers as any).q8_usage_type)}</p>
+                    <p className="admin-detail-field-value">{getLabelFromSlug(MAPPINGS_V1.usageType, (answers as any).q8_usage_type)}</p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Éléments à retrouver au retour</label>
-                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q9_return_items, mappings.returnItems)}</p>
+                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q9_return_items, MAPPINGS_V1.returnItems)}</p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Espace personnel nécessaire</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.personalSpace, (answers as any).q10_personal_space)}</p>
+                    <p className="admin-detail-field-value">{getLabelFromSlug(MAPPINGS_V1.personalSpace, (answers as any).q10_personal_space)}</p>
                   </div>
                 </div>
               </div>
@@ -714,15 +715,15 @@ export default function AdminProjectDetailPage() {
                 <div className="admin-detail-section-content">
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Fonctionnalités d'automatisation</label>
-                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q11_automation, mappings.automation)}</p>
+                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q11_automation, MAPPINGS_V1.automation)}</p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Intégrations externes</label>
-                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q12_integrations, mappings.integrations)}</p>
+                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q12_integrations, MAPPINGS_V1.integrations)}</p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Type de site</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.siteType, (answers as any).q13_site_type)}</p>
+                    <p className="admin-detail-field-value">{getLabelFromSlug(MAPPINGS_V1.siteType, (answers as any).q13_site_type)}</p>
                   </div>
                 </div>
               </div>
@@ -733,11 +734,11 @@ export default function AdminProjectDetailPage() {
                 <div className="admin-detail-section-content">
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Fonctionnalités d'administration souhaitées</label>
-                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q14_admin_features, mappings.adminFeatures)}</p>
+                    <p className="admin-detail-field-value">{renderArrayField((answers as any).q14_admin_features, MAPPINGS_V1.adminFeatures)}</p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Fonctionnement autonome</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.autonomy, (answers as any).q15_autonomy)}</p>
+                    <p className="admin-detail-field-value">{getLabelFromSlug(MAPPINGS_V1.autonomy, (answers as any).q15_autonomy)}</p>
                   </div>
                 </div>
               </div>
