@@ -1074,7 +1074,8 @@
 }
 
 .admin-loading,
-.admin-error {
+.admin-error,
+.admin-denied {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1103,13 +1104,15 @@
   }
 }
 
-.admin-error h2 {
+.admin-error h2,
+.admin-denied h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
   color: #ff3e1d;
 }
 
-.admin-error p {
+.admin-error p,
+.admin-denied p {
   font-size: 1.1rem;
   color: #a1acb8;
   margin-bottom: 2rem;

@@ -8,9 +8,10 @@
  * ACTIONS: Permet de modifier le statut des projets
  */
 
+'use client';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
 import { pb } from '@/lib/pocketbase';
 import { MAPPINGS, MAPPINGS_V1, type IntakeAnswers, type IntakeAnswersV1, type IntakeAnswersV2, isV2 } from '@/lib/intake';
 import RichTextEditor from '@/components/RichTextEditor';
@@ -90,7 +91,12 @@ const getStatusBorderColor = (status: ProjectIntake['status']): string => {
 
 export default function AdminPage() {
   const router = useRouter();
-  const { user, loading: authLoading } = useAuth();
+  
+  // États de contrôle d'accès
+  const [loading, setLoading] = useState(true);
+  const [isAllowed, setIsAllowed] = useState(false);
+  
+  // États pour les données admin (UNIQUEMENT chargés si isAllowed === true)
   const [projects, setProjects] = useState<ProjectIntake[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -116,29 +122,39 @@ export default function AdminPage() {
   });
   const perPage = 50;
 
-  // Vérifier les droits admin
+  // Vérification STRICTE des droits admin
   useEffect(() => {
-    if (authLoading) return;
+    const checkAuth = async () => {
+      try {
+        // Forcer la resynchronisation de session si elle existe
+        if (pb.authStore.isValid) {
+          try {
+            await pb.collection('users').authRefresh();
+          } catch (refreshError) {
+            // Si refresh échoue, on continue quand même avec l'état actuel
+            console.warn('[Admin] Auth refresh failed, using current state:', refreshError);
+          }
+        }
 
-    // Si pas connecté, rediriger vers login
-    if (!pb.authStore.isValid || !pb.authStore.model) {
-      router.push('/login');
-      return;
-    }
+        const user = pb.authStore.model;
 
-    // Vérifier si l'utilisateur est admin
-    const isAdmin = (pb.authStore.model as any).is_admin === true;
-    if (!isAdmin) {
-      setError('Accès refusé. Vous devez être administrateur pour accéder à cette page.');
-      setIsLoading(false);
-      return;
-    }
+        if (!user) {
+          setIsAllowed(false);
+        } else if ((user as any).is_admin === true) {
+          setIsAllowed(true);
+        } else {
+          setIsAllowed(false);
+        }
+      } catch (e) {
+        console.error('[Admin] Admin auth check failed:', e);
+        setIsAllowed(false);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Charger les projets et les stats
-    loadProjects();
-    loadStats();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authLoading, router, page, selectedStatusFilter]);
+    checkAuth();
+  }, []);
 
   // Sélectionner le premier projet quand la liste change
   useEffect(() => {
@@ -175,39 +191,40 @@ export default function AdminPage() {
     }
   }, [expandedStatusProjectId]);
 
-  const loadProjects = async () => {
-    if (!pb.authStore.isValid) {
-      setError('Non autorisé');
-      setIsLoading(false);
-      return;
-    }
+  // Charger les projets UNIQUEMENT si isAllowed === true
+  useEffect(() => {
+    if (!isAllowed) return;
 
-    setIsLoading(true);
-    setError(null);
+    const loadProjects = async () => {
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      // Construire le filtre selon le statut sélectionné
-      let filter = '';
-      if (selectedStatusFilter !== 'all') {
-        filter = `status = "${selectedStatusFilter}"`;
+      try {
+        // Construire le filtre selon le statut sélectionné
+        let filter = '';
+        if (selectedStatusFilter !== 'all') {
+          filter = `status = "${selectedStatusFilter}"`;
+        }
+
+        const res = await pb.collection('project_intakes').getList<ProjectIntake>(page, perPage, {
+          sort: '-created',
+          expand: 'owner',
+          ...(filter && { filter }),
+        });
+
+        setProjects(res.items);
+        setTotalPages(res.totalPages);
+        setTotalItems(res.totalItems);
+      } catch (err: any) {
+        console.error('[Admin] Erreur lors du chargement des projets:', err);
+        setError(err?.message || 'Erreur lors du chargement des projets');
+      } finally {
+        setIsLoading(false);
       }
+    };
 
-      const res = await pb.collection('project_intakes').getList<ProjectIntake>(page, perPage, {
-        sort: '-created',
-        expand: 'owner',
-        ...(filter && { filter }),
-      });
-
-      setProjects(res.items);
-      setTotalPages(res.totalPages);
-      setTotalItems(res.totalItems);
-    } catch (err: any) {
-      console.error('[Admin] Erreur lors du chargement des projets:', err);
-      setError(err?.message || 'Erreur lors du chargement des projets');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    loadProjects();
+  }, [isAllowed, page, selectedStatusFilter]);
 
   const handleStatusChange = async (projectId: string, newStatus: ProjectIntake['status']) => {
     setIsUpdating(projectId);
@@ -284,35 +301,40 @@ export default function AdminPage() {
     }
   };
 
-  const loadStats = async () => {
-    if (!pb.authStore.isValid) return;
+  // Charger les stats UNIQUEMENT si isAllowed === true
+  useEffect(() => {
+    if (!isAllowed) return;
 
-    try {
-      // Charger tous les projets pour avoir les vraies stats (ou utiliser des filtres séparés)
-      const allProjects = await pb.collection('project_intakes').getFullList<ProjectIntake>({
-        sort: '-created',
-      });
+    const loadStats = async () => {
+      try {
+        // Charger tous les projets pour avoir les vraies stats (ou utiliser des filtres séparés)
+        const allProjects = await pb.collection('project_intakes').getFullList<ProjectIntake>({
+          sort: '-created',
+        });
 
-      const statusCounts = {
-        total: allProjects.length,
-        submitted: 0,
-        under_analysis: 0,
-        analysis_sent: 0,
-        waiting_validation: 0,
-        approved_for_dev: 0,
-      };
+        const statusCounts = {
+          total: allProjects.length,
+          submitted: 0,
+          under_analysis: 0,
+          analysis_sent: 0,
+          waiting_validation: 0,
+          approved_for_dev: 0,
+        };
 
-      allProjects.forEach((p) => {
-        if (statusCounts.hasOwnProperty(p.status)) {
-          statusCounts[p.status as keyof typeof statusCounts]++;
-        }
-      });
+        allProjects.forEach((p) => {
+          if (statusCounts.hasOwnProperty(p.status)) {
+            statusCounts[p.status as keyof typeof statusCounts]++;
+          }
+        });
 
-      setStats(statusCounts);
-    } catch (err: any) {
-      console.error('[Admin] Erreur lors du chargement des stats:', err);
-    }
-  };
+        setStats(statusCounts);
+      } catch (err: any) {
+        console.error('[Admin] Erreur lors du chargement des stats:', err);
+      }
+    };
+
+    loadStats();
+  }, [isAllowed]);
 
   const getOwnerEmail = (project: ProjectIntake): string => {
     if (project.expand?.owner?.email) {
@@ -358,48 +380,7 @@ export default function AdminPage() {
     return value?.trim() || '—';
   };
 
-  // Afficher un loader pendant le chargement de l'auth
-  if (authLoading || isLoading) {
-    return (
-      <div className="admin-page">
-        <div className="admin-loading">
-          <div className="admin-loading-spinner"></div>
-          <p>Chargement...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Si erreur d'accès
-  if (error && !pb.authStore.isValid) {
-    return (
-      <div className="admin-page">
-        <div className="admin-error">
-          <h2>Non autorisé</h2>
-          <p>Vous devez être connecté pour accéder à cette page.</p>
-          <button onClick={() => router.push('/login')} className="admin-btn admin-btn-primary">
-            Se connecter
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Si pas admin
-  if (error && pb.authStore.isValid) {
-    return (
-      <div className="admin-page">
-        <div className="admin-error">
-          <h2>Accès refusé</h2>
-          <p>{error}</p>
-          <button onClick={() => router.push('/dashboard')} className="admin-btn admin-btn-primary">
-            Retour au dashboard
-          </button>
-        </div>
-      </div>
-    );
-  }
-
+  // 4. Maintenant, rendre le dashboard admin (isAllowed === true)
   return (
     <div className="admin-dashboard">
       {/* Sidebar - Projects List */}
@@ -1024,6 +1005,19 @@ function ProjectDetailsView({
         )}
 
       </div>
+      
+      {/* Debug panel DEV */}
+      {process.env.NODE_ENV !== 'production' && (
+        <pre style={{ background: '#111', color: '#0f0', padding: 12, marginTop: 20, fontSize: '12px', overflow: 'auto' }}>
+          {JSON.stringify({
+            PB_URL: process.env.NEXT_PUBLIC_PB_URL,
+            isValid: String(pb.authStore.isValid),
+            user_id: pb.authStore.model?.id,
+            email: pb.authStore.model?.email,
+            is_admin: String((pb.authStore.model as any)?.is_admin),
+          }, null, 2)}
+        </pre>
+      )}
     </div>
   );
 }
