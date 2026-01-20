@@ -163,8 +163,8 @@ export const MAPPINGS_V1 = {
 // ============================================================================
 
 export const MAPPINGS = {
-  // Q2: Target (single)
-  target: {
+  // Q2: Target/Audience (single) - même mapping que V1 audience
+  audience: {
     'Particuliers': 'individuals',
     'Étudiants': 'students',
     'Freelances': 'freelancers',
@@ -429,7 +429,7 @@ export function buildAnswersFromFormState(formState: FormState): IntakeAnswersV2
     },
     business: {
       q1_problem: formState.q1_problem || '',
-      q2_target: formState.q2_target ? MAPPINGS.target[formState.q2_target as keyof typeof MAPPINGS.target] || formState.q2_target : '',
+      q2_target: formState.q2_target ? MAPPINGS.audience[formState.q2_target as keyof typeof MAPPINGS.audience] || formState.q2_target : '',
       q3_frequency: formState.q3_frequency ? MAPPINGS.frequency[formState.q3_frequency as keyof typeof MAPPINGS.frequency] || formState.q3_frequency : '',
       q4_current_solution: formState.q4_current_solution ? MAPPINGS.currentSolution[formState.q4_current_solution as keyof typeof MAPPINGS.currentSolution] || formState.q4_current_solution : '',
       q5_interesting: formState.q5_interesting || '',
@@ -491,7 +491,7 @@ export function hydrateFormStateFromAnswersV2(answers: IntakeAnswersV2): FormSta
     
     // Business
     q1_problem: a.business?.q1_problem || '',
-    q2_target: getLabelFromSlug(MAPPINGS.target, a.business?.q2_target) || '',
+    q2_target: getLabelFromSlug(MAPPINGS.audience, a.business?.q2_target) || '',
     q3_frequency: getLabelFromSlug(MAPPINGS.frequency, a.business?.q3_frequency) || '',
     q4_current_solution: getLabelFromSlug(MAPPINGS.currentSolution, a.business?.q4_current_solution) || '',
     q5_interesting: a.business?.q5_interesting || '',
@@ -674,7 +674,7 @@ export function generateAdminSummary(answers: IntakeAnswers, derived: DerivedFie
     
     // Ligne 1: Problème + cible + monétisation
     const problem = a.business.q1_problem?.substring(0, 60) || 'Non spécifié';
-    const target = getLabelFromSlug(MAPPINGS.target, a.business.q2_target) || 'Non spécifié';
+    const target = getLabelFromSlug(MAPPINGS.audience, a.business.q2_target) || 'Non spécifié';
     const revenue = getLabelFromSlug(MAPPINGS.revenueModel, a.business.q7_revenue_model) || 'Non spécifié';
     lines.push(`Problème: ${problem}${a.business.q1_problem && a.business.q1_problem.length > 60 ? '...' : ''} | Cible: ${target} | Modèle: ${revenue}`);
     

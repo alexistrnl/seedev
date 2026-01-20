@@ -26,6 +26,7 @@ interface ProjectIntake {
   analysis?: string;
   recommendation?: string;
   analysis_sent_at?: string;
+  audience?: string[]; // Champ dérivé depuis answers (V1) ou stocké séparément
   needs_db: boolean;
   needs_ai: boolean;
   needs_integrations: boolean;
@@ -542,7 +543,16 @@ function ProjectDetailsView({
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Cible principale</label>
-                  <p className="admin-project-details-field-value">{getLabelFromSlug(mappings.target, (answers as any).business?.q2_target)}</p>
+                  <p className="admin-project-details-field-value">
+                    {(() => {
+                      // Pour V2, utiliser answers.business.q2_target, sinon utiliser project.audience[0]
+                      const targetSlug = isAnswersV2 
+                        ? (answers as IntakeAnswersV2).business?.q2_target
+                        : project.audience?.[0];
+                      // Utiliser mappings.audience (qui existe dans MAPPINGS et MAPPINGS_V1)
+                      return getLabelFromSlug(mappings.audience, targetSlug);
+                    })()}
+                  </p>
                 </div>
                 <div className="admin-project-details-field">
                   <label className="admin-project-details-field-label">Fréquence</label>

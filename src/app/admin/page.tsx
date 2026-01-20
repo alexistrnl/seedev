@@ -879,8 +879,8 @@ function ProjectDetailsView({
                       const targetSlug = isAnswersV2 
                         ? (answers as IntakeAnswersV2).business?.q2_target
                         : project.audience?.[0];
-                      // Utiliser MAPPINGS.target pour V2 (qui correspond à audience), ou MAPPINGS_V1.audience pour V1
-                      const targetMapping = isAnswersV2 ? MAPPINGS.target : MAPPINGS_V1.audience;
+                      // Utiliser MAPPINGS.audience pour V2, ou MAPPINGS_V1.audience pour V1
+                      const targetMapping = isAnswersV2 ? MAPPINGS.audience : MAPPINGS_V1.audience;
                       return getLabelFromSlug(targetMapping, targetSlug);
                     })()}
                   </p>
