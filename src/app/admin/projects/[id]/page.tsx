@@ -374,11 +374,34 @@ export default function AdminProjectDetailPage() {
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Fréquence</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.frequency, (answers as any).business?.q3_frequency)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const frequencySlug =
+                          answersAny?.business?.q3_frequency ??
+                          answersAny?.principle_value?.q3_frequency ??
+                          (project as any)?.problem_frequency ??
+                          null;
+                        // Pour V2, utiliser MAPPINGS.frequency, pour V1 il n'y a pas cette clé
+                        const frequencyMapping = hasV2Structure ? (MAPPINGS as any).frequency : undefined;
+                        return getLabelFromSlug(frequencyMapping, frequencySlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Solution actuelle</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.currentSolution, (answers as any).business?.q4_current_solution)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const solutionSlug =
+                          answersAny?.business?.q4_current_solution ??
+                          (project as any)?.current_solution ??
+                          null;
+                        // Pour V2, utiliser MAPPINGS.currentSolution, pour V1 il n'y a pas cette clé
+                        const solutionMapping = hasV2Structure ? (MAPPINGS as any).currentSolution : undefined;
+                        return getLabelFromSlug(solutionMapping, solutionSlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Pourquoi intéressant</label>
@@ -386,15 +409,48 @@ export default function AdminProjectDetailPage() {
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Prix estimé</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.priceRange, (answers as any).business?.q6_price_range)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const priceSlug =
+                          answersAny?.business?.q6_price_range ??
+                          (project as any)?.price_range ??
+                          null;
+                        // Pour V2, utiliser MAPPINGS.priceRange, pour V1 il n'y a pas cette clé
+                        const priceMapping = hasV2Structure ? (MAPPINGS as any).priceRange : undefined;
+                        return getLabelFromSlug(priceMapping, priceSlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Modèle revenu</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.revenueModel, (answers as any).business?.q7_revenue_model)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const revenueSlug =
+                          answersAny?.business?.q7_revenue_model ??
+                          (project as any)?.monetizations?.[0] ??
+                          null;
+                        // Pour V2, utiliser MAPPINGS.revenueModel, pour V1 utiliser MAPPINGS_V1.monetization
+                        const revenueMapping = hasV2Structure ? (MAPPINGS as any).revenueModel : (MAPPINGS_V1 as any).monetization;
+                        return getLabelFromSlug(revenueMapping, revenueSlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Concurrence</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.competition, (answers as any).business?.q8_competition)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const competitionSlug =
+                          answersAny?.business?.q8_competition ??
+                          (project as any)?.competition_level ??
+                          null;
+                        // Pour V2, utiliser MAPPINGS.competition, pour V1 il n'y a pas cette clé
+                        const competitionMapping = hasV2Structure ? (MAPPINGS as any).competition : undefined;
+                        return getLabelFromSlug(competitionMapping, competitionSlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Point flou/incertain</label>
@@ -409,7 +465,15 @@ export default function AdminProjectDetailPage() {
                 <div className="admin-detail-section-content">
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Action dès arrivée</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.firstAction, (answers as any).product?.q10_first_action)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const actionSlug = answersAny?.product?.q10_first_action ?? null;
+                        // Pour V2, utiliser MAPPINGS.firstAction, pour V1 utiliser MAPPINGS_V1.mainAction
+                        const actionMapping = hasV2Structure ? (MAPPINGS as any).firstAction : (MAPPINGS_V1 as any).mainAction;
+                        return getLabelFromSlug(actionMapping, actionSlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Parcours étapes</label>
@@ -417,15 +481,44 @@ export default function AdminProjectDetailPage() {
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Raison de revenir</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.returnReason, (answers as any).product?.q12_return_reason)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const returnReasonSlug =
+                          answersAny?.product?.q12_return_reason ??
+                          (project as any)?.return_reason ??
+                          null;
+                        // Pour V2, utiliser MAPPINGS.returnReason, pour V1 il n'y a pas cette clé
+                        const returnReasonMapping = hasV2Structure ? (MAPPINGS as any).returnReason : undefined;
+                        return getLabelFromSlug(returnReasonMapping, returnReasonSlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">À retrouver au retour</label>
-                    <p className="admin-detail-field-value">{renderArrayField((answers as any).product?.q13_return_items, mappings.returnItems)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const returnItems = answersAny?.product?.q13_return_items ?? null;
+                        // returnItems existe dans les deux versions
+                        return renderArrayField(returnItems, mappings.returnItems);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Besoin de compte</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.needAccount, (answers as any).product?.q14_need_account)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const accountSlug =
+                          answersAny?.product?.q14_need_account ??
+                          (project as any)?.need_account ??
+                          null;
+                        // Pour V2, utiliser MAPPINGS.needAccount, pour V1 utiliser MAPPINGS_V1.personalSpace (similaire)
+                        const accountMapping = hasV2Structure ? (MAPPINGS as any).needAccount : (MAPPINGS_V1 as any).personalSpace;
+                        return getLabelFromSlug(accountMapping, accountSlug);
+                      })()}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -436,19 +529,53 @@ export default function AdminProjectDetailPage() {
                 <div className="admin-detail-section-content">
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">À stocker</label>
-                    <p className="admin-detail-field-value">{renderArrayField((answers as any).tech?.q15_store_what, mappings.storeWhat)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const storeWhat = answersAny?.tech?.q15_store_what ?? null;
+                        // storeWhat existe uniquement dans MAPPINGS (V2)
+                        const storeWhatMapping = hasV2Structure ? (MAPPINGS as any).storeWhat : undefined;
+                        return renderArrayField(storeWhat, storeWhatMapping);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">IA</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.aiType, (answers as any).tech?.q16_ai_type)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const aiSlug = answersAny?.tech?.q16_ai_type ?? null;
+                        // aiType existe uniquement dans MAPPINGS (V2)
+                        const aiMapping = hasV2Structure ? (MAPPINGS as any).aiType : undefined;
+                        return getLabelFromSlug(aiMapping, aiSlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Intégrations</label>
-                    <p className="admin-detail-field-value">{renderArrayField((answers as any).tech?.q17_integrations, mappings.integrations)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const integrations = answersAny?.tech?.q17_integrations ?? null;
+                        // integrations existe dans les deux versions
+                        return renderArrayField(integrations, mappings.integrations);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Type de site</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.siteType, (answers as any).tech?.q18_site_type)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const siteTypeSlug =
+                          answersAny?.tech?.q18_site_type ??
+                          answersAny?.q13_site_type ??
+                          (project as any)?.site_type ??
+                          null;
+                        // siteType existe dans les deux versions
+                        return getLabelFromSlug(mappings.siteType, siteTypeSlug);
+                      })()}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -463,15 +590,48 @@ export default function AdminProjectDetailPage() {
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Style</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.designStyle, (answers as any).design?.q20_style)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const styleSlug =
+                          answersAny?.design?.q20_style ??
+                          (project as any)?.design_style ??
+                          null;
+                        // designStyle existe uniquement dans MAPPINGS (V2)
+                        const styleMapping = hasV2Structure ? (MAPPINGS as any).designStyle : undefined;
+                        return getLabelFromSlug(styleMapping, styleSlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Focus homepage</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.homepageFocus, (answers as any).design?.q21_home_focus)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const homeFocusSlug =
+                          answersAny?.design?.q21_home_focus ??
+                          (project as any)?.homepage_focus ??
+                          null;
+                        // homepageFocus existe uniquement dans MAPPINGS (V2)
+                        const homeFocusMapping = hasV2Structure ? (MAPPINGS as any).homepageFocus : undefined;
+                        return getLabelFromSlug(homeFocusMapping, homeFocusSlug);
+                      })()}
+                    </p>
                   </div>
                   <div className="admin-detail-field">
                     <label className="admin-detail-field-label">Output final</label>
-                    <p className="admin-detail-field-value">{getLabelFromSlug(mappings.outputType, (answers as any).design?.q22_output_type)}</p>
+                    <p className="admin-detail-field-value">
+                      {(() => {
+                        const answersAny = (project?.answers ?? {}) as any;
+                        const outputSlug =
+                          answersAny?.design?.q22_output_type ??
+                          (project as any)?.final_output_type ??
+                          null;
+                        // outputType existe uniquement dans MAPPINGS (V2)
+                        const outputMapping = hasV2Structure ? (MAPPINGS as any).outputType : undefined;
+                        return getLabelFromSlug(outputMapping, outputSlug);
+                      })()}
+                    </p>
                   </div>
                 </div>
               </div>
