@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { pb } from '@/lib/pocketbase';
-import { MAPPINGS, MAPPINGS_V1, type IntakeAnswers, isV2 } from '@/lib/intake';
+import { MAPPINGS, MAPPINGS_V1, type IntakeAnswers } from '@/lib/intake';
 import './admin-detail.css';
 
 interface ProjectIntake {
@@ -253,10 +253,10 @@ export default function AdminProjectDetailPage() {
   }
 
   const answers = project.answers || {};
-  const isAnswersV2 = isV2(answers);
   
-  // Sélectionner les mappings selon la version
-  const mappings = isAnswersV2 ? MAPPINGS : MAPPINGS_V1;
+  // Sélectionner les mappings selon la version (détection basée sur la structure)
+  const hasV2Structure = answers && typeof answers === 'object' && 'v' in answers && (answers as any).v === 2;
+  const mappings = hasV2Structure ? MAPPINGS : MAPPINGS_V1;
 
   return (
     <div className="admin-detail-page">
@@ -334,7 +334,7 @@ export default function AdminProjectDetailPage() {
           <h2 className="admin-detail-answers-title">Réponses utilisateur</h2>
 
           {/* Affichage selon la version */}
-          {isAnswersV2 ? (
+          {hasV2Structure ? (
             // V2 - Nouveau questionnaire
             <>
               {/* Section 0 - Identité */}
@@ -360,11 +360,14 @@ export default function AdminProjectDetailPage() {
                     <label className="admin-detail-field-label">Cible principale</label>
                     <p className="admin-detail-field-value">
                       {(() => {
-                        // Pour V2, utiliser answers.business.q2_target, sinon utiliser project.audience[0]
-                        const targetSlug = isAnswersV2 
-                          ? (answers as IntakeAnswersV2).business?.q2_target
-                          : project.audience?.[0];
-                        // Utiliser mappings.audience (qui existe dans MAPPINGS et MAPPINGS_V1)
+                        const answersAny = (project?.answers ?? {}) as any;
+                        
+                        const targetSlug =
+                          answersAny?.business?.q2_target ??
+                          answersAny?.principle_value?.q2_audience?.[0] ??
+                          project?.audience?.[0] ??
+                          null;
+                        
                         return getLabelFromSlug(mappings.audience, targetSlug);
                       })()}
                     </p>
