@@ -1,0 +1,219 @@
+.dashboard {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.dashboard__header {
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  background: var(--bg);
+  border-bottom: 0.5px solid var(--border2);
+  z-index: 10;
+}
+
+.dashboard__logo {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.dashboard__header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.dashboard__user {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.dashboard__logout {
+  background: none;
+  border: 0.5px solid var(--border2);
+  padding: 7px 16px;
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.dashboard__logout:hover { color: var(--text); border-color: var(--muted); }
+
+/* ── Body ── */
+.dashboard__body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  min-height: 0;
+  background: var(--border);
+  gap: 1px;
+}
+
+/* ── Colonne gauche ── */
+.dashboard__left {
+  background: var(--bg);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+}
+
+.dashboard__section {
+  background: var(--bg2);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard__section--gold {
+  border-left: 2px solid var(--gold);
+}
+
+.dashboard__section-label {
+  margin-bottom: 4px;
+}
+
+.dashboard__project-name {
+  font-family: var(--font-playfair), serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.2;
+}
+
+.dashboard__status {
+  display: inline-block;
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 0.5px solid var(--border2);
+  color: var(--gold);
+  width: fit-content;
+}
+
+.dashboard__project-date {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.dashboard__file-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+}
+
+.dashboard__file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--bg);
+}
+
+.dashboard__file-name {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 300;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard__file-link {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.dashboard__file-link:hover { color: var(--gold2); }
+
+.dashboard__delivered-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.dashboard__delivered-link {
+  font-size: 13px;
+  color: var(--gold);
+  transition: color 0.2s;
+  word-break: break-all;
+}
+
+.dashboard__delivered-link:hover { color: var(--gold2); }
+
+/* ── Colonne droite : chat ── */
+.dashboard__right {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dashboard__chat-header {
+  padding: 20px 28px 16px;
+  border-bottom: 0.5px solid var(--border);
+  flex-shrink: 0;
+}
+
+.dashboard__chat-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── Empty ── */
+.dashboard__empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .dashboard__body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .dashboard__left {
+    max-height: 50vh;
+  }
+  .dashboard__header {
+    padding: 0 20px;
+  }
+}

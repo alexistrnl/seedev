@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --no-eslint --yes)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --src-dir --import-alias \"@/*\" --no-eslint --yes --skip-install)",
+      "Bash(mkdir -p \"/c/Users/alexi/Documents/SEEDEV/tmp-init\")",
+      "Bash(cp -r \"/c/Users/alexi/Documents/SEEDEV/tmp-init/.\" \"/c/Users/alexi/Documents/SEEDEV/\")",
+      "Bash(rm -rf \"/c/Users/alexi/Documents/SEEDEV/tmp-init\")",
+      "Bash(rmdir \"/c/Users/alexi/Documents/SEEDEV/tmp-init\")",
+      "Bash(cp:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}

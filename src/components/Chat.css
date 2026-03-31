@@ -1,0 +1,106 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chat__bubble {
+  max-width: 68%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chat__bubble--me    { align-self: flex-end;   align-items: flex-end; }
+.chat__bubble--them  { align-self: flex-start; align-items: flex-start; }
+
+.chat__sender {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.chat__text {
+  background: var(--bg2);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+.chat__bubble--me .chat__text {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+.chat__time {
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: 0.04em;
+}
+
+.chat__empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--muted2);
+  font-style: italic;
+  font-family: var(--font-cormorant), serif;
+}
+
+.chat__form {
+  display: flex;
+  border-top: 0.5px solid var(--border2);
+  flex-shrink: 0;
+}
+
+.chat__input {
+  flex: 1;
+  background: var(--bg2);
+  border: none;
+  border-right: 0.5px solid var(--border2);
+  padding: 16px 20px;
+  color: var(--text);
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  outline: none;
+}
+
+.chat__input::placeholder { color: var(--muted2); }
+
+.chat__send {
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  padding: 0 28px;
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.chat__send:not(:disabled):hover { background: var(--gold2); }
+.chat__send:disabled { opacity: 0.4; cursor: not-allowed; }
