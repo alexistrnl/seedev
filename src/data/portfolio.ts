@@ -12,9 +12,9 @@ export const projects = [
     tags: ["Vitrine", "Next.js", "Tailwind"],
   },
   {
-    name: "ToDoMom",
-    url: "https://todomom.fr",
-    description: "To-do list gamifiée pour familles avec abonnements Stripe et déploiement VPS.",
-    tags: ["SaaS", "PocketBase", "Stripe"],
+    name: "Bitebox",
+    url: "https://bitebox.fr",
+    description: "Plateforme de commande en ligne pour restaurants avec gestion des menus et paiement intégré.",
+    tags: ["SaaS", "Next.js", "Stripe"],
   },
 ]

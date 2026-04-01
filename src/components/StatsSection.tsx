@@ -1,7 +1,7 @@
 import "./StatsSection.css"
 
 const stats = [
-  { num: "03", label: "Projets livrés" },
+  { num: "11", label: "Projets livrés" },
   { num: "100%", label: "Clients accompagnés" },
   { num: "2024", label: "Année de fondation" },
 ]

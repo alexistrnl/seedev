@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { Playfair_Display, Cormorant_Garamond, DM_Sans } from "next/font/google"
-import Script from "next/script"
 import "./globals.css"
 
 const playfair = Playfair_Display({
@@ -31,14 +30,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="fr">
       <body className={`${playfair.variable} ${cormorant.variable} ${dmSans.variable}`}>
-        <Script id="theme-init" strategy="beforeInteractive">{`
-          (function(){
-            var t = localStorage.getItem('seedev-theme') || 'dark';
-            document.documentElement.className = t;
-          })();
-        `}</Script>
         {children}
       </body>
     </html>

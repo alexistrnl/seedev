@@ -108,8 +108,8 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 5px 12px;
-  border: 0.5px solid var(--border2);
-  color: var(--gold);
+  border: 0.5px solid var(--bordeaux);
+  color: var(--bordeaux2);
   width: fit-content;
 }
 

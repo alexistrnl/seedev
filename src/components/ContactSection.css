@@ -1,0 +1,50 @@
+.contact {
+  border-bottom: 0.5px solid var(--border2);
+  padding: 120px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contact__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 640px;
+}
+
+.contact__title {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.15;
+}
+
+.contact__title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.contact__sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.contact__actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .contact {
+    padding: 80px 24px;
+  }
+
+  .contact__actions {
+    flex-direction: column;
+  }
+}

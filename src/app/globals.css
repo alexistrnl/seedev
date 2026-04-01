@@ -1,33 +1,20 @@
 @import "tailwindcss";
 
-/* ── Palette light (défaut :root) ── */
+/* ── Palette dark (fixe) ── */
 :root {
-  --bg:      #f7f3ee;
-  --bg2:     #f0ebe2;
-  --bg3:     #e8e0d4;
-  --border:  rgba(100,80,50,0.10);
-  --border2: rgba(100,80,50,0.22);
-  --gold:    #a07840;
-  --gold2:   #7a5a28;
-  --cream:   #1a1610;
-  --text:    #2a2420;
-  --muted:   #7a7068;
-  --muted2:  #b0a898;
-}
-
-/* ── Palette dark ── */
-:root.dark {
-  --bg:      #0e0d0b;
-  --bg2:     #151410;
-  --bg3:     #1c1a16;
-  --border:  rgba(212,196,168,0.10);
-  --border2: rgba(212,196,168,0.22);
-  --gold:    #c9a96e;
-  --gold2:   #e8d5b0;
-  --cream:   #f5efe6;
-  --text:    #f0ebe2;
-  --muted:   #8a8278;
-  --muted2:  #4a4640;
+  --bg:        #0e0d0b;
+  --bg2:       #151410;
+  --bg3:       #1c1a16;
+  --border:    rgba(212,196,168,0.10);
+  --border2:   rgba(212,196,168,0.22);
+  --gold:      #c9a96e;
+  --gold2:     #e8d5b0;
+  --cream:     #f5efe6;
+  --text:      #f0ebe2;
+  --muted:     #8a8278;
+  --muted2:    #4a4640;
+  --bordeaux:  #C4566A;
+  --bordeaux2: #E07088;
 }
 
 /* ── Reset ── */
@@ -69,16 +56,12 @@ body {
   animation: gridDrift 30s linear infinite;
 }
 
-:root:not(.dark) .home-bg {
-  background-image:
-    linear-gradient(rgba(100,80,50,0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(100,80,50,0.07) 1px, transparent 1px);
-}
 
 @keyframes gridDrift {
   from { background-position: 0 0; }
   to   { background-position: 72px 72px; }
 }
+
 
 h1, h2, h3, h4, h5 {
   font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;

@@ -1,9 +1,8 @@
 import Link from "next/link"
+import ScrollToContact from "./ScrollToContact"
 import "./HeroSection.css"
 
 export default function HeroSection() {
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "#"
-
   return (
     <section className="hero">
       <div className="hero__body">
@@ -21,14 +20,7 @@ export default function HeroSection() {
         </p>
 
         <div className="hero__actions">
-          <a
-            href={calendlyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn--gold"
-          >
-            Prendre un RDV
-          </a>
+          <ScrollToContact className="btn btn--gold" />
           <Link href="/login" className="btn btn--ghost">
             Espace client
           </Link>
