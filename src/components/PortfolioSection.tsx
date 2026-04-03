@@ -20,6 +20,16 @@ export default function PortfolioSection() {
             rel="noopener noreferrer"
             className="pf__card"
           >
+            {/* Mini browser bar */}
+            <div className="pf__preview" aria-hidden="true">
+              <div className="pf__preview-bar">
+                <span className="pf__preview-dot pf__preview-dot--r" />
+                <span className="pf__preview-dot pf__preview-dot--y" />
+                <span className="pf__preview-dot pf__preview-dot--g" />
+                <span className="pf__preview-url" />
+              </div>
+            </div>
+
             <span className="pf__arrow">↗</span>
             <span className="pf__num">0{i + 1}</span>
             <h3 className="pf__name">{project.name}</h3>

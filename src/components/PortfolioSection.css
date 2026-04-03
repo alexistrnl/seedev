@@ -1,10 +1,8 @@
 .pf {
-  border-bottom: 0.5px solid var(--border2);
 }
 
 .pf__header {
   padding: 100px 60px 64px;
-  border-bottom: 0.5px solid var(--border2);
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -21,54 +19,86 @@
   color: var(--gold);
 }
 
-/* Grille avec joints 1px */
 .pf__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
+  gap: 16px;
+  padding: 24px;
 }
 
 .pf__card {
   position: relative;
-  background: var(--bg2);
-  padding: 40px 36px;
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
   text-decoration: none;
-  transition: background 0.3s;
-  overflow: hidden;
-}
-
-/* Barre dorée qui remonte au hover */
-.pf__card::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1.5px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.pf__card:hover::before {
-  transform: scaleX(1);
+  transition: background 0.3s, border-color 0.3s, transform 0.3s;
 }
 
 .pf__card:hover {
-  background: var(--bg3);
+  background: var(--card-bg-hover);
+  border-color: rgba(48,209,88,0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(48,209,88,0.1);
 }
 
-/* Flèche animée */
+/* ── Mini browser preview ── */
+.pf__preview {
+  width: 100%;
+  background: rgba(0,0,0,0.4);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+
+.pf__preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.pf__preview-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pf__preview-dot--r { background: #FF5F57; }
+.pf__preview-dot--y { background: #FFBD2E; }
+.pf__preview-dot--g { background: #28C840; }
+
+.pf__preview-url {
+  flex: 1;
+  height: 10px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 6px;
+  margin-left: 6px;
+}
+
+
+/* ── Contenu texte ── */
+.pf__card > .pf__num,
+.pf__card > .pf__name,
+.pf__card > .pf__desc,
+.pf__card > .pf__tags,
+.pf__card > .pf__arrow {
+  padding: 0 28px;
+}
+
+.pf__card > .pf__tags { padding-bottom: 28px; }
+
 .pf__arrow {
   position: absolute;
-  top: 32px;
-  right: 32px;
-  font-size: 18px;
+  top: 90px;
+  right: 20px;
+  font-size: 16px;
   color: var(--gold);
   opacity: 0;
   transform: translate(-6px, 6px);
@@ -84,29 +114,22 @@
   font-family: var(--font-cormorant), serif;
   font-weight: 300;
   font-style: italic;
-  font-size: 44px;
+  font-size: 36px;
   color: var(--muted2);
   line-height: 1;
-  transition: color 0.3s;
-}
-
-.pf__card:hover .pf__num {
-  color: var(--gold);
-  opacity: 0.6;
+  margin-top: 8px;
 }
 
 .pf__name {
   font-family: var(--font-playfair), serif;
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 400;
   color: var(--cream);
   line-height: 1.2;
   transition: color 0.2s;
 }
 
-.pf__card:hover .pf__name {
-  color: var(--gold2);
-}
+.pf__card:hover .pf__name { color: var(--gold2); }
 
 .pf__desc {
   font-size: 13px;
@@ -120,7 +143,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 4px;
 }
 
 .pf__tag {
@@ -129,12 +151,14 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--bordeaux2);
-  border: 0.5px solid var(--bordeaux);
+  color: var(--gold);
+  background: rgba(48,209,88,0.08);
+  border: 1px solid rgba(48,209,88,0.25);
+  border-radius: 4px;
   padding: 4px 10px;
 }
 
 @media (max-width: 768px) {
   .pf__header { padding: 60px 24px 40px; }
-  .pf__grid { grid-template-columns: 1fr; }
+  .pf__grid { grid-template-columns: 1fr; padding: 16px; }
 }

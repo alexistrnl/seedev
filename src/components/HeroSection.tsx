@@ -1,6 +1,14 @@
 import Link from "next/link"
 import ScrollToContact from "./ScrollToContact"
+import TypeWriter from "./TypeWriter"
 import "./HeroSection.css"
+
+const heroTypes = [
+  "un site vitrine élégant.",
+  "une landing page qui convertit.",
+  "une application SaaS complète.",
+  "un projet livré proprement.",
+]
 
 export default function HeroSection() {
   return (
@@ -9,14 +17,12 @@ export default function HeroSection() {
         <p className="hero__tag stag">Agence de développement web</p>
 
         <h1 className="hero__title">
-          Vos projets web,<br />
-          <em>développés avec soin.</em>
+          Vos idées méritent<br />
+          <em>un site à leur hauteur.</em>
         </h1>
 
         <p className="hero__sub">
-          Seedev conçoit et développe des sites vitrines, landing pages
-          et applications SaaS — livrés proprement, suivis de près,
-          sans intermédiaire inutile.
+          Nous construisons <TypeWriter phrases={heroTypes} speed={60} pause={2500} />
         </p>
 
         <div className="hero__actions">
@@ -29,9 +35,9 @@ export default function HeroSection() {
 
       <div className="hero__mockup" aria-hidden="true">
         <div className="mockup__bar">
-          <span className="mockup__dot" />
-          <span className="mockup__dot" />
-          <span className="mockup__dot" />
+          <span className="mockup__dot mockup__dot--red" />
+          <span className="mockup__dot mockup__dot--yellow" />
+          <span className="mockup__dot mockup__dot--green" />
           <span className="mockup__url-bar" />
         </div>
 

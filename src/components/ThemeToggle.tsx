@@ -4,25 +4,32 @@ import { useEffect, useState } from "react"
 import "./ThemeToggle.css"
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<"dark" | "light" | null>(null)
+  const [warm, setWarm] = useState(false)
 
   useEffect(() => {
-    const t = (document.documentElement.className as "dark" | "light") || "dark"
-    setTheme(t)
+    const stored = localStorage.getItem("seedev-theme")
+    if (stored === "warm") {
+      document.documentElement.classList.add("warm")
+      setWarm(true)
+    }
   }, [])
 
   function toggle() {
-    const next = theme === "dark" ? "light" : "dark"
-    setTheme(next)
-    document.documentElement.className = next
-    localStorage.setItem("seedev-theme", next)
+    const next = !warm
+    setWarm(next)
+    if (next) {
+      document.documentElement.classList.add("warm")
+      localStorage.setItem("seedev-theme", "warm")
+    } else {
+      document.documentElement.classList.remove("warm")
+      localStorage.setItem("seedev-theme", "dark")
+    }
   }
 
-  if (theme === null) return null
-
   return (
-    <button className="toggle" onClick={toggle} aria-label="Changer le thème">
-      <span className="toggle__icon">{theme === "dark" ? "○" : "●"}</span>
+    <button className="tgl" onClick={toggle} aria-label="Changer le thème">
+      <span className="tgl__dot" />
+      <span className="tgl__label">{warm ? "Dark" : "Warm"}</span>
     </button>
   )
 }

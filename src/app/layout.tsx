@@ -31,6 +31,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function(){
+            try {
+              var t = localStorage.getItem('seedev-theme');
+              if (t === 'warm') document.documentElement.classList.add('warm');
+            } catch(e) {}
+          })();
+        `}} />
+      </head>
       <body className={`${playfair.variable} ${cormorant.variable} ${dmSans.variable}`}>
         {children}
       </body>

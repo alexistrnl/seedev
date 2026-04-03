@@ -7,7 +7,10 @@ export default function Footer() {
   return (
     <footer className="ft">
       <div className="ft__top">
-        <span className="ft__logo">SEEDEV</span>
+        <div className="ft__brand">
+          <span className="ft__logo">SEEDEV</span>
+          <p className="ft__copy">© {new Date().getFullYear()} Seedev. Tous droits réservés.</p>
+        </div>
         <nav className="ft__nav">
           <button
             className="ft__link"
@@ -19,9 +22,6 @@ export default function Footer() {
           <Link href="#" className="ft__link">Mentions légales</Link>
           <Link href="#" className="ft__link">CGV</Link>
         </nav>
-      </div>
-      <div className="ft__bottom">
-        <p className="ft__copy">© {new Date().getFullYear()} Seedev. Tous droits réservés.</p>
       </div>
     </footer>
   )

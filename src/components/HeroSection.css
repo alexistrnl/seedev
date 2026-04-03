@@ -3,9 +3,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: calc(56px + 100px) 60px 80px;
+  padding: calc(54px + 60px) 60px 80px;
   position: relative;
-  border-bottom: 0.5px solid var(--border2);
+
   overflow: hidden;
 }
 
@@ -63,7 +63,12 @@
   width: 420px;
   flex-shrink: 0;
   align-self: center;
-  border: 0.5px solid var(--border2);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  overflow: hidden;
   position: relative;
   animation: fadeUp 0.9s 0.35s both cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -71,8 +76,8 @@
 /* Barre navigateur */
 .mockup__bar {
   height: 34px;
-  background: var(--bg2);
-  border-bottom: 0.5px solid var(--border2);
+  background: rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -80,11 +85,14 @@
 }
 
 .mockup__dot {
-  width: 7px;
-  height: 7px;
-  background: var(--muted2);
-  opacity: 0.4;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
 }
+
+.mockup__dot--red    { background: #FF5F57; box-shadow: 0 0 6px rgba(255,95,87,0.7); }
+.mockup__dot--yellow { background: #FFBD2E; box-shadow: 0 0 6px rgba(255,189,46,0.7); }
+.mockup__dot--green  { background: #28C840; box-shadow: 0 0 6px rgba(40,200,64,0.7); }
 
 .mockup__url-bar {
   flex: 1;

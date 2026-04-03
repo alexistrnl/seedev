@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--bg);
+  background: transparent;
   overflow: hidden;
 }
 
@@ -35,7 +35,11 @@
 }
 
 .chat__text {
-  background: var(--bg2);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
   padding: 10px 14px;
   font-size: 13px;
   color: var(--text);
@@ -44,8 +48,14 @@
 }
 
 .chat__bubble--me .chat__text {
-  background: var(--gold);
-  color: var(--bg);
+  background: rgba(48,209,88,0.15);
+  border-color: rgba(48,209,88,0.3);
+  color: var(--cream);
+  border-radius: 12px 12px 2px 12px;
+}
+
+.chat__bubble--them .chat__text {
+  border-radius: 12px 12px 12px 2px;
 }
 
 .chat__time {
@@ -67,28 +77,31 @@
 
 .chat__form {
   display: flex;
-  border-top: 0.5px solid var(--border2);
+  border-top: 1px solid rgba(255,255,255,0.08);
   flex-shrink: 0;
+  gap: 1px;
 }
 
 .chat__input {
   flex: 1;
-  background: var(--bg2);
+  background: rgba(255,255,255,0.04);
   border: none;
-  border-right: 0.5px solid var(--border2);
+  border-right: 1px solid rgba(255,255,255,0.08);
   padding: 16px 20px;
   color: var(--text);
   font-family: var(--font-dm-sans), sans-serif;
   font-size: 13px;
   font-weight: 300;
   outline: none;
+  transition: background 0.2s;
 }
 
+.chat__input:focus { background: rgba(255,255,255,0.06); }
 .chat__input::placeholder { color: var(--muted2); }
 
 .chat__send {
-  background: var(--gold);
-  color: var(--bg);
+  background: rgba(48,209,88,0.15);
+  color: var(--gold);
   border: none;
   padding: 0 28px;
   font-family: var(--font-dm-sans), sans-serif;
@@ -97,10 +110,14 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.25s;
+  transition: background 0.25s, color 0.25s;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-.chat__send:not(:disabled):hover { background: var(--gold2); }
+.chat__send:not(:disabled):hover {
+  background: rgba(48,209,88,0.25);
+  color: var(--gold2);
+}
+
 .chat__send:disabled { opacity: 0.4; cursor: not-allowed; }

@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import LoginForm from "@/components/LoginForm"
+import AnimatedBg from "@/components/AnimatedBg"
 import styles from "./login.module.css"
 
 export default function LoginPage() {
@@ -18,7 +19,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="home-bg" aria-hidden="true" />
+      <AnimatedBg />
       <main className={styles.page} style={{ position: "relative", zIndex: 1 }}>
         <div className={styles.logo}>SEEDEV</div>
         <LoginForm />
