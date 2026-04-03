@@ -9,9 +9,10 @@ import Chat from "./Chat"
 import "./Dashboard.css"
 
 const STATUS_LABELS: Record<string, string> = {
-  quote_sent:  "Devis envoyé",
-  in_progress: "En cours de développement",
-  delivered:   "Livré",
+  waiting_brief: "En attente du devis",
+  quote_sent:    "Devis envoyé",
+  in_progress:   "En cours de développement",
+  delivered:     "Livré",
 }
 
 export default function Dashboard() {

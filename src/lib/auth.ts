@@ -76,7 +76,7 @@ export async function signup(
     await pb.collection("projects").create({
       owner: user.id,
       name: `Projet de ${firstName} ${lastName}`,
-      status: "quote_sent",
+      status: "waiting_brief",
     }, { $autoCancel: false })
   } catch (err: any) {
     throw pbError(err, "Création du projet")

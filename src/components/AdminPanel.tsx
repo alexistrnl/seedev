@@ -9,9 +9,10 @@ import Chat from "./Chat"
 import "./AdminPanel.css"
 
 const STATUS_OPTIONS = [
-  { value: "quote_sent",  label: "Devis envoyé" },
-  { value: "in_progress", label: "En cours" },
-  { value: "delivered",   label: "Livré" },
+  { value: "waiting_brief", label: "En attente du devis" },
+  { value: "quote_sent",    label: "Devis envoyé" },
+  { value: "in_progress",   label: "En cours" },
+  { value: "delivered",     label: "Livré" },
 ]
 
 function generateCode() {
