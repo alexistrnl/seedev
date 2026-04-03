@@ -89,11 +89,13 @@ export default function Dashboard() {
               </p>
             </div>
 
-            {project.brief_file && (
+            {project.brief_file && typeof project.brief_file === "string" && project.brief_file !== "" && (
               <div className="dashboard__section">
                 <p className="dashboard__section-label stag">Cahier des charges</p>
                 <div className="dashboard__file-row">
-                  <span className="dashboard__file-name">{project.brief_file}</span>
+                  <span className="dashboard__file-name">
+                    {project.brief_file.replace(/_[a-z0-9]+(\.[^.]+)$/i, "$1")}
+                  </span>
                   <a
                     href={pb.files.getURL(project, project.brief_file)}
                     target="_blank"
