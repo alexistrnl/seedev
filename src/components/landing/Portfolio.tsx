@@ -34,7 +34,7 @@ export default function Portfolio() {
     },
   ];
 
-  const [hover, setHover] = React.useState(null);
+  const [hover, setHover] = React.useState<number | null>(null);
 
   return (
     <section id="portfolio" style={{ padding: '96px 0', borderTop: '1px solid var(--line)' }}>

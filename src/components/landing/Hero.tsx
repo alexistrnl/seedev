@@ -149,7 +149,7 @@ const CursorSiteBuilder = () => {
     return () => clearInterval(id);
   }, []);
 
-  const shown = (idx) => step > idx;
+  const shown = (idx: number) => step > idx;
   const cursorPos = step < TOTAL ? TIMELINE[step].cursor : TIMELINE[TOTAL - 1].cursor;
   const label = step < TOTAL ? TIMELINE[step].label : 'deployed.';
   const isDone = step >= TOTAL;

@@ -31,7 +31,7 @@ export default function Configurator() {
 
   const steps = ['Marque', 'Couleur', 'Typo', 'Style', 'Aperçu'];
 
-  const update = (k, v) => setData(d => ({ ...d, [k]: v }));
+  const update = (k: string, v: unknown) => setData(d => ({ ...d, [k]: v }));
 
   return (
     <section id="configurateur" style={{ padding: '96px 0', background: 'var(--bg)', position: 'relative', borderTop: '1px solid var(--line)' }}>

@@ -26,7 +26,7 @@ export default function Comparatif() {
     { feat: 'Formation pour gérer ton site', competitor: false, seedev: true, seedevNote: '30 min en visio, replay inclus' },
   ];
 
-  const renderCell = (v, isSeedev) => {
+  const renderCell = (v: boolean | string, isSeedev: boolean) => {
     if (v === true) {
       return (
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
