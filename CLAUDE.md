@@ -155,7 +155,6 @@ src/
 │   ├── ServicesSection.tsx + .css
 │   ├── Footer.tsx + .css
 │   ├── TopMenu.tsx + .css
-│   ├── ThemeToggle.tsx + .css
 │   ├── LoginForm.tsx + .css
 │   ├── Dashboard.tsx + .css
 │   ├── AdminPanel.tsx + .css
@@ -175,97 +174,73 @@ src/
 
 ### Identité
 - Marque : **SEEDEV** — toujours en majuscules dans le logo
-- Positionnement visuel : **luxe / premium / éditorial**
-- Zéro rondeur (`border-radius: 0` partout sauf exception explicite)
-- Zéro gradient, zéro ombre portée, zéro effet glow
-- Tout repose sur la typographie, l'espacement et les proportions
+- Positionnement visuel : **moderne / épuré / professionnel**
+- Border-radius modérés : boutons `8px`, cards `12px`, inputs `8px`, tags `6px`
+- Zéro gradient décoratif sur les éléments UI
+- Ombres légères autorisées uniquement pour profondeur fonctionnelle : `box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)`
+- Thème unique clair (blanc/bleu/noir) — pas de toggle dark
 
-### Palette — dark (défaut)
+### Palette
 ```css
---bg:      #0e0d0b;   /* fond principal */
---bg2:     #151410;   /* surfaces */
---bg3:     #1c1a16;   /* surfaces hover */
---border:  rgba(212,196,168,0.10);
---border2: rgba(212,196,168,0.22);
---gold:    #c9a96e;   /* accent principal */
---gold2:   #e8d5b0;   /* accent hover */
---cream:   #f5efe6;   /* texte fort */
---text:    #f0ebe2;   /* texte courant */
---muted:   #8a8278;   /* texte secondaire */
---muted2:  #4a4640;   /* texte tertiaire */
-```
-
-### Palette — light (toggle)
-```css
---bg:      #f7f3ee;
---bg2:     #f0ebe2;
---bg3:     #e8e0d4;
---border:  rgba(100,80,50,0.10);
---border2: rgba(100,80,50,0.22);
---gold:    #a07840;
---gold2:   #7a5a28;
---cream:   #1a1610;
---text:    #2a2420;
---muted:   #7a7068;
---muted2:  #b0a898;
+--bg:      #ffffff;   /* fond principal */
+--bg2:     #f8f9fb;   /* surfaces subtiles */
+--bg3:     #eef1f6;   /* surfaces hover */
+--border:  #e5e7eb;   /* borders neutres */
+--border2: #d1d5db;   /* borders accentuées */
+--blue:    #0066FF;   /* accent principal */
+--blue2:   #0052cc;   /* accent hover */
+--blue3:   #e6efff;   /* accent background léger */
+--black:   #0a0a0a;   /* texte titres */
+--text:    #1a1a1a;   /* texte courant */
+--muted:   #6b7280;   /* texte secondaire */
+--muted2:  #9ca3af;   /* texte tertiaire */
 ```
 
 ### Typographie
 ```css
-/* Titres — Playfair Display (Google Fonts) */
-font-family: 'Playfair Display', serif;
-/* weights : 400 (regular), 400 italic, 700 */
+/* Tout — Geist Sans (next/font/google) */
+font-family: var(--font-geist-sans), ui-sans-serif, sans-serif;
+/* variable : --font-geist-sans */
 
-/* Accents italiques — Cormorant Garamond (Google Fonts) */
-font-family: 'Cormorant Garamond', serif;
-/* weights : 300, 300 italic, 400, 400 italic */
-
-/* Corps, UI, labels — DM Sans (Google Fonts) */
-font-family: 'DM Sans', sans-serif;
-/* weights : 300, 400, 500 */
-```
-
-Import Google Fonts dans `layout.tsx` :
-```
-Playfair+Display:ital,wght@0,400;0,700;1,400
-Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400
-DM+Sans:wght@300;400;500
+/* Code / chiffres monospace — Geist Mono */
+font-family: var(--font-geist-mono), ui-monospace, monospace;
+/* variable : --font-geist-mono */
 ```
 
 ### Règles typographiques
-- Titres de section (`h2`) : Playfair Display 400, avec un mot ou groupe en italique doré
-- Sous-titres / citations : Cormorant Garamond 300 italic, couleur `--muted`
-- Labels, nav, tags, boutons : DM Sans 400–500, `letter-spacing: 0.1em`, `text-transform: uppercase`, `font-size: 10–11px`
-- Corps de texte : DM Sans 300, `font-size: 14px`, `line-height: 1.7`
-- Numéros décoratifs : Cormorant Garamond 300 italic, très grands (40–52px), couleur `--muted2`
+- Titres h1/h2/h3 : Geist Sans `font-weight: 700`, `letter-spacing: -0.02em`
+- Corps de texte : Geist Sans 400, `font-size: 16px`, `line-height: 1.6`
+- Labels, nav, boutons : Geist Sans 500, casse normale (pas uppercase), `letter-spacing: 0.01em` max
+- Taille de base body : `16px`
 
 ### Espacements
 - Padding horizontal global : `60px` (desktop)
-- Padding vertical sections : `120px`
-- Grilles avec joints : `gap: 1px; background: var(--border)` — pas de gap réel, les joints sont la séparation
-- Ligne verticale décorative dans le hero : `width: 0.5px`, couleur `--border2`
+- Padding vertical sections : `100px`
+- Grilles cards : `gap: 16px`
+- Ligne verticale décorative dans le hero : `1px solid var(--border)`
 
 ### Composants UI
-- **Bouton primaire** : background `--gold`, couleur `--bg`, aucun border-radius, padding `16px 36px`, DM Sans 500 uppercase 11px
-- **Bouton ghost** : background transparent, border `0.5px solid --border2`, couleur `--muted`, même taille
-- **Tags** : border `0.5px solid --border2`, DM Sans uppercase 9px, `letter-spacing: 0.12em`, padding `4px 10px`, aucun border-radius
-- **Cards portfolio** : padding `40px 36px`, hover → `background: --bg3`, flèche ↗ animée en `position: absolute` top-right
-- **Séparateur section** : `s-tag` = ligne horizontale `24px` + texte, couleur `--gold`
+- **Bouton primaire** (`.btn--gold`) : background `--blue`, couleur `#ffffff`, `border-radius: 8px`, padding `14px 32px`, Geist 500
+- **Bouton ghost** (`.btn--ghost`) : background transparent, border `1px solid --border2`, couleur `--muted`, même taille
+- **Tags** : background `--blue3`, border `1px solid rgba(0,102,255,0.2)`, couleur `--blue`, `border-radius: 6px`, Geist 500 11px
+- **Cards** : background `--bg2`, border `1px solid --border`, `border-radius: 12px`, hover → `--bg3` + ombre légère
+- **Séparateur section** : `.stag` = ligne `1px` 24px + texte, couleur `--blue`
 
 ### Animations
 - CSS uniquement
-- Hover cards : `transition: background 0.3s`
-- Flèche portfolio : `opacity 0 → 1` + `transform: translate(-6px,6px) → translate(0,0)`, `transition: all 0.3s`
+- Hover cards : `transition: background 0.3s, box-shadow 0.3s`
+- Flèche portfolio : `opacity 0 → 1` + `transform: translate(-6px,6px) → translate(0,0)`, `transition: all 0.35s`
 - Boutons : `transition: all 0.25s`
 - Pas de scroll animations, pas de keyframes complexes
 
 ### Ce qu'il ne faut JAMAIS faire
-- `border-radius` sauf demande explicite
 - Gradients décoratifs sur les éléments UI
-- Ombres portées (`box-shadow`)
-- Couleurs vives (pas de bleu, pas de vert fluo, pas de rouge)
-- Fonts system (Arial, Inter, Roboto, system-ui)
+- Ombres lourdes (`box-shadow` avec spread > 4px ou opacité > 0.15)
+- Couleurs vives autres que `--blue` / `--blue2` / `--blue3`
+- Fonts system (Arial, Inter, Roboto, system-ui) — utiliser Geist Sans
 - Layouts centrés avec `max-width: 1200px; margin: auto` — le contenu va de bord à bord avec padding
+- `text-transform: uppercase` sur boutons et labels (interdit)
+- `letter-spacing` > `0.01em` sauf cas très spécifique (logo uniquement)
 
 ---
 
@@ -276,12 +251,3 @@ DM+Sans:wght@300;400;500
 - `/admin` — redirige vers `/` si non authentifié ou `user.is_admin !== true`
 - `/login` — redirige vers `/dashboard` si déjà connecté
 - Pas de vérification email obligatoire à l'inscription
-
----
-
-## Theme toggle
-
-Dark par défaut. Persisté dans `localStorage` sous la clé `seedev-theme`.
-Script injecté dans `<head>` avant hydration React pour éviter le flash.
-La classe `dark` / `light` est appliquée sur `<html>`.
-Toutes les variables CSS sont définies dans `:root` (light) et `:root.dark` (dark).

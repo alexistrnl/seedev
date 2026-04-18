@@ -1,25 +1,16 @@
 import type { Metadata } from "next"
-import { Playfair_Display, Cormorant_Garamond, DM_Sans } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
+import AnimatedBg from "@/components/AnimatedBg"
 import "./globals.css"
 
-const playfair = Playfair_Display({
+const geistSans = Geist({
   subsets: ["latin"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-playfair",
+  variable: "--font-geist-sans",
 })
 
-const cormorant = Cormorant_Garamond({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["300", "400"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
-})
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-dm-sans",
+  variable: "--font-geist-mono",
 })
 
 export const metadata: Metadata = {
@@ -31,17 +22,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-            try {
-              var t = localStorage.getItem('seedev-theme');
-              if (t === 'warm') document.documentElement.classList.add('warm');
-            } catch(e) {}
-          })();
-        `}} />
-      </head>
-      <body className={`${playfair.variable} ${cormorant.variable} ${dmSans.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <AnimatedBg />
         {children}
       </body>
     </html>

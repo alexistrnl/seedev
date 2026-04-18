@@ -1,12 +1,12 @@
 .ft {
-  background: var(--glass-heavy);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg2);
   border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
 }
 
 .ft__top {
-  padding: 48px 60px;
+  padding: 40px 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,47 +17,41 @@
 .ft__brand {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .ft__logo {
-  font-family: var(--font-dm-sans), sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--cream);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--black);
 }
 
 .ft__nav {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
   flex-wrap: wrap;
 }
 
 .ft__link {
-  font-family: var(--font-dm-sans), sans-serif;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--muted);
   text-decoration: none;
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 0.15s;
 }
 
 .ft__link:hover { color: var(--text); }
 
 .ft__copy {
-  font-size: 10px;
+  font-size: 13px;
   color: var(--muted2);
-  letter-spacing: 0.04em;
 }
 
 @media (max-width: 640px) {
-  .ft__top { padding: 40px 24px; flex-direction: column; align-items: flex-start; }
+  .ft__top { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
 }

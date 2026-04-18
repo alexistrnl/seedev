@@ -1,41 +1,43 @@
 .ct {
-  padding: 100px 60px;
+  padding: 80px 60px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
   align-items: flex-start;
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Left ── */
 .ct__left {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 28px;
 }
 
 .ct__title {
-  font-family: var(--font-playfair), 'Playfair Display', serif;
   font-size: clamp(28px, 3.5vw, 48px);
-  font-weight: 400;
-  color: var(--cream);
-  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  line-height: 1.1;
 }
 
 .ct__title em {
-  font-style: italic;
-  color: var(--gold);
+  font-style: normal;
+  color: var(--blue);
 }
 
 .ct__sub {
-  font-size: 14px;
-  font-weight: 300;
+  font-size: 16px;
+  font-weight: 400;
   color: var(--muted);
   line-height: 1.7;
 }
 
 .ct__actions {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -49,24 +51,21 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 0 0 rgba(48,209,88,0.5);
+  background: var(--blue);
   animation: ctpulse 2.5s ease-out infinite;
   flex-shrink: 0;
 }
 
 @keyframes ctpulse {
-  0%   { box-shadow: 0 0 0 0 rgba(48,209,88,0.5); }
-  70%  { box-shadow: 0 0 0 10px rgba(48,209,88,0); }
-  100% { box-shadow: 0 0 0 0 rgba(48,209,88,0); }
+  0%   { box-shadow: 0 0 0 0 rgba(0,102,255,0.4); }
+  70%  { box-shadow: 0 0 0 8px rgba(0,102,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,102,255,0); }
 }
 
 .ct__meta-text {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
-  letter-spacing: 0.08em;
   color: var(--muted);
-  text-transform: uppercase;
 }
 
 /* ── Right — chat card ── */
@@ -79,12 +78,13 @@
 
 .ct__card {
   width: 100%;
-  background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
 
 /* Card header */
@@ -92,23 +92,23 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 18px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  background: var(--card-bg2);
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
 }
 
 .ct__card-avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(48,209,88,0.15);
-  border: 1px solid rgba(48,209,88,0.3);
+  background: var(--blue3);
+  border: 1px solid rgba(0,102,255,0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-playfair), serif;
-  font-size: 16px;
-  color: var(--gold);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--blue);
   flex-shrink: 0;
 }
 
@@ -119,27 +119,26 @@
 }
 
 .ct__card-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--cream);
-  letter-spacing: 0.02em;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  letter-spacing: -0.01em;
 }
 
 .ct__card-status {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 10px;
-  color: var(--gold);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--blue);
+  font-weight: 500;
 }
 
 .ct__status-dot {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--blue);
   animation: ctpulse 2.5s ease-out infinite;
 }
 
@@ -147,21 +146,22 @@
 .ct__chat {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   padding: 16px 20px;
+  background: var(--bg4, var(--bg2));
 }
 
 .ct__msg {
   display: flex;
-  max-width: 80%;
+  max-width: 82%;
 }
 
 .ct__msg span {
-  font-size: 12px;
-  font-weight: 300;
+  font-size: 13px;
+  font-weight: 400;
   line-height: 1.55;
-  padding: 9px 14px;
-  border-radius: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
 }
 
 .ct__msg--in {
@@ -169,8 +169,9 @@
 }
 
 .ct__msg--in span {
-  background: rgba(255,255,255,0.07);
-  color: var(--cream);
+  background: #ffffff;
+  color: var(--text);
+  border: 1px solid var(--border);
   border-bottom-left-radius: 4px;
 }
 
@@ -179,9 +180,8 @@
 }
 
 .ct__msg--out span {
-  background: rgba(48,209,88,0.15);
-  border: 1px solid rgba(48,209,88,0.25);
-  color: var(--gold2);
+  background: var(--blue);
+  color: #ffffff;
   border-bottom-right-radius: 4px;
 }
 
@@ -191,8 +191,9 @@
   align-items: center;
   gap: 4px;
   padding: 10px 14px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
   border-bottom-left-radius: 4px;
   align-self: flex-start;
   width: fit-content;
@@ -219,27 +220,27 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 16px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  background: var(--card-bg2);
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: #ffffff;
 }
 
 .ct__card-placeholder {
   flex: 1;
-  font-size: 12px;
-  font-weight: 300;
+  font-size: 13px;
+  font-weight: 400;
   color: var(--muted2);
   pointer-events: none;
 }
 
 .ct__card-send {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: rgba(48,209,88,0.2);
-  border: 1px solid rgba(48,209,88,0.35);
-  color: var(--gold);
-  font-size: 13px;
+  background: var(--blue);
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,17 +250,7 @@
 
 /* Watermark */
 .ct__watermark {
-  position: absolute;
-  bottom: -40px;
-  right: -20px;
-  font-family: var(--font-cormorant), serif;
-  font-size: 160px;
-  font-weight: 300;
-  font-style: italic;
-  color: rgba(255,255,255,0.025);
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
+  display: none;
 }
 
 /* ── Responsive ── */
@@ -269,16 +260,6 @@
     padding: 60px 24px;
     gap: 48px;
   }
-
-  .ct__right {
-    justify-content: flex-start;
-  }
-
-  .ct__card {
-    max-width: 100%;
-  }
-
-  .ct__watermark { display: none; }
 }
 
 @media (max-width: 480px) {

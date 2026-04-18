@@ -8,8 +8,8 @@
 
 .tw__cursor {
   display: inline-block;
-  color: var(--gold);
-  font-weight: 300;
+  color: var(--blue);
+  font-weight: 400;
   margin-left: 1px;
   animation: twBlink 1s step-end infinite;
 }

@@ -9,7 +9,11 @@
       "Bash(rmdir \"/c/Users/alexi/Documents/SEEDEV/tmp-init\")",
       "Bash(cp:*)",
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(npx next *)",
+      "Bash(npx tsc *)",
+      "Bash(cat next.config.ts)",
+      "Bash(cat next.config.js)"
     ]
   }
 }
