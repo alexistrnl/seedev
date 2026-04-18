@@ -1,27 +1,27 @@
-import TopMenu from "@/components/TopMenu"
-import HeroSection from "@/components/HeroSection"
-import StatsSection from "@/components/StatsSection"
-import PortfolioSection from "@/components/PortfolioSection"
-import ServicesSection from "@/components/ServicesSection"
-import ContactSection from "@/components/ContactSection"
-import Footer from "@/components/Footer"
-import AnimatedBg from "@/components/AnimatedBg"
-import ThemeToggle from "@/components/ThemeToggle"
+import Nav from '@/components/landing/Nav';
+import Hero from '@/components/landing/Hero';
+import Process from '@/components/landing/Process';
+import Comparatif from '@/components/landing/Comparatif';
+import Portfolio from '@/components/landing/Portfolio';
+import Configurator from '@/components/landing/Configurator';
+import Pricing from '@/components/landing/Pricing';
+import CTA from '@/components/landing/CTA';
+import Footer from '@/components/landing/Footer';
 
 export default function HomePage() {
   return (
     <>
-      <AnimatedBg />
-      <ThemeToggle />
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <TopMenu />
-        <HeroSection />
-        <StatsSection />
-        <PortfolioSection />
-        <ServicesSection />
-        <ContactSection />
-        <Footer />
-      </div>
+      <Nav />
+      <main>
+        <Hero />
+        <Process />
+        <Comparatif />
+        <Portfolio />
+        <Configurator />
+        <Pricing />
+        <CTA />
+      </main>
+      <Footer />
     </>
-  )
+  );
 }
